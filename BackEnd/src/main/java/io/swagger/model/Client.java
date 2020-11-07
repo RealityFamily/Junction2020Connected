@@ -2,10 +2,8 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.Goal;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,8 +22,8 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-07T19:30:51.910Z[GMT]")
 
 @Entity
-@Table(name = "User")
-public class User   {
+@Table(name = "Clients")
+public class Client {
 
   @Id
   @GeneratedValue(generator = "UUID")
@@ -56,14 +54,14 @@ public class User   {
   @JsonProperty("instagram")
   private String instagram = null;
 
-//  @Column(name = "goals", nullable = false)
-//  @ElementCollection
-  @OneToMany(mappedBy = "user")
+  @Column(name = "goals", nullable = false)
+  @ElementCollection
+  @OneToMany(mappedBy = "client")
   @JsonProperty("goals")
   @Valid
   private List<Goal> goals = null;
 
-  public User id(UUID id) {
+  public Client id(UUID id) {
     this.id = id;
     return this;
   }
@@ -84,7 +82,7 @@ public class User   {
     this.id = id;
   }
 
-  public User accountIBAN(String accountIBAN) {
+  public Client accountIBAN(String accountIBAN) {
     this.accountIBAN = accountIBAN;
     return this;
   }
@@ -104,7 +102,7 @@ public class User   {
     this.accountIBAN = accountIBAN;
   }
 
-  public User accountName(String accountName) {
+  public Client accountName(String accountName) {
     this.accountName = accountName;
     return this;
   }
@@ -123,7 +121,7 @@ public class User   {
     this.accountName = accountName;
   }
 
-  public User accountAuth(String accountAuth) {
+  public Client accountAuth(String accountAuth) {
     this.accountAuth = accountAuth;
     return this;
   }
@@ -142,7 +140,7 @@ public class User   {
     this.accountAuth = accountAuth;
   }
 
-  public User balance(Double balance) {
+  public Client balance(Double balance) {
     this.balance = balance;
     return this;
   }
@@ -162,7 +160,7 @@ public class User   {
     this.balance = balance;
   }
 
-  public User instagram(String instagram) {
+  public Client instagram(String instagram) {
     this.instagram = instagram;
     return this;
   }
@@ -181,12 +179,12 @@ public class User   {
     this.instagram = instagram;
   }
 
-  public User goals(List<Goal> goals) {
+  public Client goals(List<Goal> goals) {
     this.goals = goals;
     return this;
   }
 
-  public User addGoalsItem(Goal goalsItem) {
+  public Client addGoalsItem(Goal goalsItem) {
     if (this.goals == null) {
       this.goals = new ArrayList<Goal>();
     }
@@ -217,14 +215,14 @@ public class User   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    User user = (User) o;
-    return Objects.equals(this.id, user.id) &&
-        Objects.equals(this.accountIBAN, user.accountIBAN) &&
-        Objects.equals(this.accountName, user.accountName) &&
-        Objects.equals(this.accountAuth, user.accountAuth) &&
-        Objects.equals(this.balance, user.balance) &&
-        Objects.equals(this.instagram, user.instagram) &&
-        Objects.equals(this.goals, user.goals);
+    Client client = (Client) o;
+    return Objects.equals(this.id, client.id) &&
+        Objects.equals(this.accountIBAN, client.accountIBAN) &&
+        Objects.equals(this.accountName, client.accountName) &&
+        Objects.equals(this.accountAuth, client.accountAuth) &&
+        Objects.equals(this.balance, client.balance) &&
+        Objects.equals(this.instagram, client.instagram) &&
+        Objects.equals(this.goals, client.goals);
   }
 
   @Override

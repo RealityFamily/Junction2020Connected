@@ -2,11 +2,8 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.Pattern;
-import io.swagger.model.User;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -67,9 +64,9 @@ public class Goal   {
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
   @ManyToOne
-  @JoinColumn(name = "Users_id")
-  @JsonProperty("user")
-  private User user = null;
+  @JoinColumn(name = "Clients_id")
+  @JsonProperty("client")
+  private Client client = null;
 
   public Goal id(UUID id) {
     this.id = id;
@@ -218,8 +215,8 @@ public class Goal   {
     this.patterns = patterns;
   }
 
-  public Goal user(User user) {
-    this.user = user;
+  public Goal user(Client client) {
+    this.client = client;
     return this;
   }
 
@@ -230,12 +227,12 @@ public class Goal   {
   @ApiModelProperty(value = "")
   
     @Valid
-    public User getUser() {
-    return user;
+    public Client getUser() {
+    return client;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setUser(Client client) {
+    this.client = client;
   }
 
 
@@ -255,12 +252,12 @@ public class Goal   {
         Objects.equals(this.progress, goal.progress) &&
         Objects.equals(this.weightInDepositoryPipe20, goal.weightInDepositoryPipe20) &&
         Objects.equals(this.patterns, goal.patterns) &&
-        Objects.equals(this.user, goal.user);
+        Objects.equals(this.client, goal.client);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, balance, progress, weightInDepositoryPipe20, patterns, user);
+    return Objects.hash(id, name, description, balance, progress, weightInDepositoryPipe20, patterns, client);
   }
 
   @Override
@@ -275,7 +272,7 @@ public class Goal   {
     sb.append("    progress: ").append(toIndentedString(progress)).append("\n");
     sb.append("    weightInDepositoryPipe20: ").append(toIndentedString(weightInDepositoryPipe20)).append("\n");
     sb.append("    patterns: ").append(toIndentedString(patterns)).append("\n");
-    sb.append("    user: ").append(toIndentedString(user)).append("\n");
+    sb.append("    user: ").append(toIndentedString(client)).append("\n");
     sb.append("}");
     return sb.toString();
   }
