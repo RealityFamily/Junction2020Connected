@@ -20,16 +20,21 @@ public class Main {
         for (Object object : list) {
             Transaction transaction = (Transaction) object;
 
-            Pattern pattern = Pattern.compile("\\d\\d\\d\\d-\\d\\d-\\d\\d\\s\\d\\d:\\d\\d:\\d\\d");
-            Matcher matcher = pattern.matcher(transaction.timestamp);
-            matcher.find();
-            String[] splited =  matcher.group(0).split(" ");
-            transaction.timestamp = splited[0] + "T" + splited[1];
+            formatTimeToRFC3339(transaction);
             if(transaction.counterpartyAccountName.contains("Oy Hotel Studio")) {
                 System.out.println(transaction);
             }
         }
     }
+
+    private static void formatTimeToRFC3339(Transaction transaction) {
+        Pattern pattern = Pattern.compile("\\d\\d\\d\\d-\\d\\d-\\d\\d\\s\\d\\d:\\d\\d:\\d\\d");
+        Matcher matcher = pattern.matcher(transaction.timestamp);
+        matcher.find();
+        String[] splited =  matcher.group(0).split(" ");
+        transaction.timestamp = splited[0] + "T" + splited[1]+ "Z";
+    }
+
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static ColumnPositionMappingStrategy setColumMapping()
     {
