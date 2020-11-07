@@ -1,6 +1,9 @@
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.SimpleTimeZone;
 
-public class Transaction implements Serializable {
+public class Transaction implements Serializable, Comparable<Transaction> {
     String timestamp;
     String paymentDate;
     String valueDate;
@@ -197,5 +200,11 @@ public class Transaction implements Serializable {
                 ", vientiselitekd=" + vientiselitekd +
                 ", taplajikd=" + taplajikd +
                 '}';
+    }
+
+    public int compareTo(Transaction o) {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd'T'HH:mm:ss'z'");
+//        dateFormat.format()
+        return 0;
     }
 }

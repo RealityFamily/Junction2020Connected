@@ -3,7 +3,9 @@ import au.com.bytecode.opencsv.bean.ColumnPositionMappingStrategy;
 import au.com.bytecode.opencsv.bean.CsvToBean;
 
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,12 +21,32 @@ public class Main {
         List list = csv.parse(setColumMapping(), csvReader);
         for (Object object : list) {
             Transaction transaction = (Transaction) object;
-
             formatTimeToRFC3339(transaction);
-            if(transaction.counterpartyAccountName.contains("Oy Hotel Studio")) {
-                System.out.println(transaction);
+
+            {
+                /////////// DATA TESTING /////////
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd'T'HH:mm:ss'z'");
+                /*Date date  = Date.parse(transaction.timestamp);
+                transaction.timestamp = dateFormat.format(date);*/
+
+
+
+                if (transaction.counterpartyAccountName.contains("Mankina Oy")&& transaction.accountName.contains("HYJNI Oy")) {
+
+
+                    System.out.println(transaction);
+                }
+
+                //TODO: сортируем по дате, потом запихиваем все это в рекуррентную нейронную сеть. Походит на предсказание погоды.
+
+
+                //////////////////////////////////
             }
         }
+
+
+
     }
 
     private static void formatTimeToRFC3339(Transaction transaction) {
