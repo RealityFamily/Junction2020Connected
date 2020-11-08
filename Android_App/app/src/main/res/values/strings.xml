@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">OPKeeper</string>
+    <string name="Goal_Intro">Create goals and challenges to move towards them with our help</string>
+    <string name="your_goal">Your goal</string>
+    <string name="your_challenge">Your challenge</string>
+    <string name="goal">Goal</string>
+    <string name="Euro">€</string>
+    <string name="Zero">0</string>
+    <string name="procent_of_savings">Percentage of deposits from your savings</string>
+    <string name="create">Create</string>
+    <string name="challenge">Challenge</string>
+    <string name="challenge_roles">Live a week on</string>
+    <string name="Challenge_Motivation">Can you live for a month on the specified amount?</string>
+    <string name="share">Share</string>
+    <string name="patterns">Patterns</string>
+    <string name="budget_leak">Budget leak</string>
+</resources>
