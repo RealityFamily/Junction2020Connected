@@ -10,7 +10,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.Call;
+import retrofit2.converter.gson.GsonConverterFactory;
 import ru.realityfamily.opkeeper.R;
+import ru.realityfamily.opkeeper.Requests.TransactionsAPI;
 
 public class Main_Goal_Fragment extends MyFragment {
 
@@ -28,11 +34,31 @@ public class Main_Goal_Fragment extends MyFragment {
         RecyclerView patternsRecycler = v.findViewById(R.id.patternsRecycler);
 
         seekBarObligatoryProcent.setProgress(35);
+        seekBarObligatoryProcent.setThumb(null);
         seekBarLeisureProcent.setProgress(49);
+        seekBarLeisureProcent.setThumb(null);
         seekBarСapitalProcent.setProgress(7);
+        seekBarСapitalProcent.setThumb(null);
 
-        
-        seekBarBudgetProcent.setProgress();
+        seekBarBudgetProcent.setThumb(null);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.world_server))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TransactionsAPI transactionsAPI = retrofit.create(TransactionsAPI.class);
+        Call<Integer> call = transactionsAPI.getDebCredStatus();
+        call.enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                seekBarBudgetProcent.setProgress(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+
+            }
+        });
 
         return v;
     }

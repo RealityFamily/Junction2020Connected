@@ -14,4 +14,6 @@
     <string name="share">Share</string>
     <string name="patterns">Patterns</string>
     <string name="budget_leak">Budget leak</string>
+    <string name="world_server">http://192.168.1.72:8080</string>
+    <string name="local_server">http://192.168.1.72:8080</string>
 </resources>

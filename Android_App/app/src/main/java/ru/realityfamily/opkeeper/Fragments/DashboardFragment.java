@@ -17,8 +17,16 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import ru.realityfamily.opkeeper.Adapters.DashboardAdapter;
+import ru.realityfamily.opkeeper.MainActivity;
 import ru.realityfamily.opkeeper.R;
+import ru.realityfamily.opkeeper.Requests.ChallengeAPI;
+import ru.realityfamily.opkeeper.Requests.GoalsAPI;
 
 public class DashboardFragment extends MyFragment {
 
@@ -37,11 +45,6 @@ public class DashboardFragment extends MyFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.dashboard_fragment, container, false);
 
-        List<String> elements = new ArrayList<>();
-        elements.add("50/30/20");
-        elements.add("Travel to Bali");
-        elements.add("Travel to Bali");
-
         goalsRecycler = v.findViewById(R.id.RecyclerGoals);
         challengesRecycler = v.findViewById(R.id.RecyclerChallenges);
         fbottomSheet = v.findViewById(R.id.bottomSheetContainer);
@@ -50,16 +53,41 @@ public class DashboardFragment extends MyFragment {
 
         goalsRecycler.setHasFixedSize(true);
         goalsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        goalsRecycler.setAdapter(new DashboardAdapter(elements));
 
-        elements = new ArrayList<>();
-        elements.add("Keep calm and spend less");
-        elements.add("Keep calm and spend less");
-        elements.add("Keep calm and spend less");
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.world_server))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
+        Call<List<DashboardAdapter.SmallInfo>> call = goalsAPI.getGoals();
+        call.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
+            @Override
+            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
+                goalsRecycler.setAdapter(new DashboardAdapter(response.body(), DashboardAdapter.TypeElementInfo.Goal, (MainActivity) getActivity()));
+            }
+
+            @Override
+            public void onFailure(Call<List<DashboardAdapter.SmallInfo>> call, Throwable t) {
+
+            }
+        });
 
         challengesRecycler.setHasFixedSize(true);
         challengesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        challengesRecycler.setAdapter(new DashboardAdapter(elements));
+
+        ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
+        Call<List<DashboardAdapter.SmallInfo>> call1 = challengeAPI.getChallenges();
+        call1.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
+            @Override
+            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
+                challengesRecycler.setAdapter(new DashboardAdapter(response.body(), DashboardAdapter.TypeElementInfo.Challenge, (MainActivity) getActivity()));
+            }
+
+            @Override
+            public void onFailure(Call<List<DashboardAdapter.SmallInfo>> call, Throwable t) {
+
+            }
+        });
 
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(fbottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);

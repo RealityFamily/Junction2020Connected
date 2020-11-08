@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
         toolbarTitle.setText(df.Title);
     }
 
-    public void changeFragment(MyFragment fragment, String title, MyFragment oldFragment) {
+    public void changeFragment(MyFragment fragment, MyFragment oldFragment) {
         backFragment = oldFragment;
 
-        toolbarTitle.setText(title);
+        toolbarTitle.setText(fragment.Title);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frameContainer, fragment).commit();
     }
