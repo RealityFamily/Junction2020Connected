@@ -41,6 +41,8 @@ public class ChallengePostInstagramApiController implements ChallengePostInstagr
     public ResponseEntity<Void> postChallengeToInstagram(@ApiParam(value = "" ,required=true )  @Valid @RequestBody ChallengeInfo body
 ,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
 ) {
+
+        System.out.println("Стукнулись в пост в Facebook для challenge");
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }

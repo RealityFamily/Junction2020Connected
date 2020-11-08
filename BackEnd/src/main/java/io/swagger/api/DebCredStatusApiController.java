@@ -2,8 +2,11 @@ package io.swagger.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.realityfamily.Repositories.UsersRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,6 +34,9 @@ public class DebCredStatusApiController implements DebCredStatusApi {
 
     private final HttpServletRequest request;
 
+    @Autowired
+    private UsersRepository usersRepository;
+
     @org.springframework.beans.factory.annotation.Autowired
     public DebCredStatusApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -42,6 +48,7 @@ public class DebCredStatusApiController implements DebCredStatusApi {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
+               // return new ResponseEntity<Double>(usersRepository.findAll().get(0).getBalance(), HttpStatus.OK);
                 return new ResponseEntity<Double>(objectMapper.readValue("0.8008281904610115", Double.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);

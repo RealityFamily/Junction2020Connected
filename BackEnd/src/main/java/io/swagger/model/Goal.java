@@ -114,6 +114,17 @@ public class Goal   {
     return this;
   }
 
+  public Goal(UUID id, String name, String description, Double balance, Double progress, Double weightInDepositoryPipe20, List<Pattern> patterns, Client client) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
+    this.balance = balance;
+    this.progress = progress;
+    this.weightInDepositoryPipe20 = weightInDepositoryPipe20;
+    this.patterns = patterns;
+    this.client = client;
+  }
+
   /**
    * Get description
    * @return description
@@ -286,5 +297,18 @@ public class Goal   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public Goal(String name, String description, Double balance, Double progress, Double weightInDepositoryPipe20, List<Pattern> patterns, Client client) {
+    this.name = name;
+    this.description = description;
+    this.balance = balance;
+    this.progress = progress;
+    this.weightInDepositoryPipe20 = weightInDepositoryPipe20;
+    this.patterns = patterns;
+    this.client = client;
+  }
+
+  public Goal() {
   }
 }

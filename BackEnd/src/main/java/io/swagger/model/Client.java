@@ -21,9 +21,12 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-07T19:30:51.910Z[GMT]")
 
+
+
 @Entity
 @Table(name = "Clients")
 public class Client {
+
 
   @Id
   @GeneratedValue(generator = "UUID")
@@ -61,9 +64,26 @@ public class Client {
   @Valid
   private List<Goal> goals = null;
 
+
   public Client id(UUID id) {
     this.id = id;
     return this;
+  }
+
+  public Client(String accountAuth) {
+    this.accountAuth = accountAuth;
+  }
+
+  public Client() {
+  }
+
+  public Client(String accountIBAN, String accountName, String accountAuth, Double balance, String instagram, List<Goal> goals) {
+    this.accountIBAN = accountIBAN;
+    this.accountName = accountName;
+    this.accountAuth = accountAuth;
+    this.balance = balance;
+    this.instagram = instagram;
+    this.goals = goals;
   }
 
   /**
