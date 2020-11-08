@@ -3,8 +3,10 @@ package io.swagger.api;
 import io.swagger.model.Goal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.realityfamily.Repositories.GoalsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,9 @@ public class GoalApiController implements GoalApi {
 
     private final HttpServletRequest request;
 
+    @Autowired
+    private GoalsRepository goalsRepository;
+
     @org.springframework.beans.factory.annotation.Autowired
     public GoalApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -41,6 +46,8 @@ public class GoalApiController implements GoalApi {
     public ResponseEntity<Void> postGoal(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Goal body
 ,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
 ) {
+
+        goalsRepository.save(body);
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }

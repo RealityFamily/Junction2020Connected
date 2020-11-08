@@ -43,11 +43,11 @@ public class Pattern   {
 
   @Column(name = "detectedStart", nullable = false)
   @JsonProperty("detectedStart")
-  private OffsetDateTime detectedStart = null;
+  private String detectedStart = null;
 
   @Column(name = "detectedEnd", nullable = false)
   @JsonProperty("detectedEnd")
-  private OffsetDateTime detectedEnd = null;
+  private String detectedEnd = null;
 
   @Column(name = "frequency", nullable = false)
   @JsonProperty("frequency")
@@ -129,7 +129,7 @@ public class Pattern   {
     this.id = id;
   }
 
-  public Pattern detectedStart(OffsetDateTime detectedStart) {
+  public Pattern detectedStart(String detectedStart) {
     this.detectedStart = detectedStart;
     return this;
   }
@@ -142,15 +142,15 @@ public class Pattern   {
       @NotNull
 
     @Valid
-    public OffsetDateTime getDetectedStart() {
+    public String getDetectedStart() {
     return detectedStart;
   }
 
-  public void setDetectedStart(OffsetDateTime detectedStart) {
+  public void setDetectedStart(String detectedStart) {
     this.detectedStart = detectedStart;
   }
 
-  public Pattern detectedEnd(OffsetDateTime detectedEnd) {
+  public Pattern detectedEnd(String detectedEnd) {
     this.detectedEnd = detectedEnd;
     return this;
   }
@@ -163,11 +163,11 @@ public class Pattern   {
       @NotNull
 
     @Valid
-    public OffsetDateTime getDetectedEnd() {
+    public String getDetectedEnd() {
     return detectedEnd;
   }
 
-  public void setDetectedEnd(OffsetDateTime detectedEnd) {
+  public void setDetectedEnd(String detectedEnd) {
     this.detectedEnd = detectedEnd;
   }
 
@@ -352,5 +352,19 @@ public class Pattern   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public Pattern() {
+  }
+
+  public Pattern(String detectedStart, String detectedEnd, Long frequency, BigDecimal allAmount, BigDecimal averageTransAmount, PatternTypeEnum patternType, Goal goal, List<Transaction> transactions) {
+    this.detectedStart = detectedStart;
+    this.detectedEnd = detectedEnd;
+    this.frequency = frequency;
+    this.allAmount = allAmount;
+    this.averageTransAmount = averageTransAmount;
+    this.patternType = patternType;
+    this.goal = goal;
+    this.transactions = transactions;
   }
 }

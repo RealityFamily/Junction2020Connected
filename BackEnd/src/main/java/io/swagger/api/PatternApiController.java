@@ -4,8 +4,10 @@ import io.swagger.model.Pattern;
 import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.realityfamily.Repositories.PatternsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,9 @@ public class PatternApiController implements PatternApi {
 
     private final HttpServletRequest request;
 
+    @Autowired
+    private PatternsRepository patternsRepository;
+
     @org.springframework.beans.factory.annotation.Autowired
     public PatternApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -44,12 +49,8 @@ public class PatternApiController implements PatternApi {
 ) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Pattern>(objectMapper.readValue("{\n  \"detectedStart\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"goal\" : {\n    \"balance\" : 5.962133916683182,\n    \"weightInDepositoryPipe20\" : 2.3021358869347655,\n    \"patterns\" : [ null, null ],\n    \"name\" : \"name\",\n    \"description\" : \"description\",\n    \"progress\" : 5.637376656633329,\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n    \"user\" : {\n      \"accountAuth\" : \"accountAuth\",\n      \"balance\" : 7.061401241503109,\n      \"accountName\" : \"accountName\",\n      \"accountIBAN\" : \"accountIBAN\",\n      \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n      \"instagram\" : \"https://www.instagram.com/worldverwe\",\n      \"goals\" : [ null, null ]\n    }\n  },\n  \"allAmount\" : 6.027456183070403,\n  \"averageTransAmount\" : 1.4658129805029452,\n  \"detectedEnd\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"patternType\" : \"Obligatory\",\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n  \"transactions\" : [ {\n    \"timeStamp\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"amount\" : 9.301444243932576,\n    \"balance\" : 3.616076749251911,\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n  }, {\n    \"timeStamp\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"amount\" : 9.301444243932576,\n    \"balance\" : 3.616076749251911,\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n  } ],\n  \"frequency\" : 0\n}", Pattern.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Pattern>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+
+            return new ResponseEntity<Pattern>(patternsRepository.getOne(patternId), HttpStatus.OK);//new ResponseEntity<Pattern>(objectMapper.readValue("{\n  \"detectedStart\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"goal\" : {\n    \"balance\" : 5.962133916683182,\n    \"weightInDepositoryPipe20\" : 2.3021358869347655,\n    \"patterns\" : [ null, null ],\n    \"name\" : \"name\",\n    \"description\" : \"description\",\n    \"progress\" : 5.637376656633329,\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n    \"user\" : {\n      \"accountAuth\" : \"accountAuth\",\n      \"balance\" : 7.061401241503109,\n      \"accountName\" : \"accountName\",\n      \"accountIBAN\" : \"accountIBAN\",\n      \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n      \"instagram\" : \"https://www.instagram.com/worldverwe\",\n      \"goals\" : [ null, null ]\n    }\n  },\n  \"allAmount\" : 6.027456183070403,\n  \"averageTransAmount\" : 1.4658129805029452,\n  \"detectedEnd\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"patternType\" : \"Obligatory\",\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n  \"transactions\" : [ {\n    \"timeStamp\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"amount\" : 9.301444243932576,\n    \"balance\" : 3.616076749251911,\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n  }, {\n    \"timeStamp\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"amount\" : 9.301444243932576,\n    \"balance\" : 3.616076749251911,\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\"\n  } ],\n  \"frequency\" : 0\n}", Pattern.class), HttpStatus.NOT_IMPLEMENTED);
         }
 
         return new ResponseEntity<Pattern>(HttpStatus.NOT_IMPLEMENTED);
@@ -59,7 +60,9 @@ public class PatternApiController implements PatternApi {
 ,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
 ) {
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        body.setGoal(null);
+        patternsRepository.save(body);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
 }
