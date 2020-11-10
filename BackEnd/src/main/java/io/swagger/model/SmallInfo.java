@@ -24,6 +24,11 @@ public class SmallInfo   {
   @JsonProperty("name")
   private String name = null;
 
+  public SmallInfo(UUID id, String name) {
+    this.id = id;
+    this.name = name;
+  }
+
   public SmallInfo id(UUID id) {
     this.id = id;
     return this;

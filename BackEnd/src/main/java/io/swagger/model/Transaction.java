@@ -27,6 +27,16 @@ import javax.validation.constraints.*;
 @Table(name = "Transactions")
 public class Transaction   {
 
+  public Transaction() {
+  }
+
+  public Transaction(String timeStamp, Double amount, Double balance, Pattern pattern) {
+    this.timeStamp = timeStamp;
+    this.amount = amount;
+    this.balance = balance;
+    this.pattern = pattern;
+  }
+
   @Id
   @GeneratedValue(generator = "UUID")
   @GenericGenerator(
@@ -38,7 +48,7 @@ public class Transaction   {
 
   @Column(name = "timeStamp", nullable = false)
   @JsonProperty("timeStamp")
-  private OffsetDateTime timeStamp = null;
+  private String timeStamp = null;
 
   @Column(name = "amount", nullable = false)
   @JsonProperty("amount")
@@ -47,6 +57,11 @@ public class Transaction   {
   @Column(name = "balance", nullable = false)
   @JsonProperty("balance")
   private Double balance = null;
+
+  @Column(name = "counterCompanyName", nullable = false)
+  @JsonProperty("counterCompanyName")
+  private String counterCompanyName = null;
+
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
   @ManyToOne
@@ -75,7 +90,7 @@ public class Transaction   {
     this.id = id;
   }
 
-  public Transaction timeStamp(OffsetDateTime timeStamp) {
+  public Transaction timeStamp(String timeStamp) {
     this.timeStamp = timeStamp;
     return this;
   }
@@ -88,11 +103,11 @@ public class Transaction   {
       @NotNull
 
     @Valid
-    public OffsetDateTime getTimeStamp() {
+    public String getTimeStamp() {
     return timeStamp;
   }
 
-  public void setTimeStamp(OffsetDateTime timeStamp) {
+  public void setTimeStamp(String timeStamp) {
     this.timeStamp = timeStamp;
   }
 

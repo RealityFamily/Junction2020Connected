@@ -6,6 +6,8 @@
 package io.swagger.api;
 
 import io.swagger.model.Challenge;
+
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +39,7 @@ public interface ChallengeApi {
         method = RequestMethod.GET)
     ResponseEntity<Challenge> getChallenge(@ApiParam(value = "",required=true) @PathVariable("challengeId") UUID challengeId
 ,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
-);
+) throws UnsupportedEncodingException;
 
 
     @ApiOperation(value = "", nickname = "postChallenge", notes = "", tags={ "challenge", })

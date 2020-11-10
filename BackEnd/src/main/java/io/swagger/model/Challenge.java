@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 
@@ -26,7 +27,7 @@ import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "Challenges")
-public class Challenge   {
+public class Challenge {
 
   @Id
   @GeneratedValue(generator = "UUID")
@@ -78,11 +79,12 @@ public class Challenge   {
 
   @Column(name = "periodStart", nullable = false)
   @JsonProperty("periodStart")
-  private OffsetDateTime periodStart = null;
+  private String periodStart = null;
 
   @Column(name = "periodEnd", nullable = false)
   @JsonProperty("periodEnd")
-  private OffsetDateTime periodEnd = null;
+  @DateTimeFormat
+  private String periodEnd = null;
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
   @JoinColumn(name = "Goals_id")
@@ -92,6 +94,17 @@ public class Challenge   {
   public Challenge id(UUID id) {
     this.id = id;
     return this;
+  }
+
+  public Challenge() {
+  }
+
+  public Challenge(ChallengeTypeEnum challengeType, String name, String periodStart, String periodEnd, Goal goal) {
+    this.challengeType = challengeType;
+    this.name = name;
+    this.periodStart = periodStart;
+    this.periodEnd = periodEnd;
+    this.goal = goal;
   }
 
   /**
@@ -150,7 +163,7 @@ public class Challenge   {
     this.name = name;
   }
 
-  public Challenge periodStart(OffsetDateTime periodStart) {
+  public Challenge periodStart(String periodStart) {
     this.periodStart = periodStart;
     return this;
   }
@@ -163,15 +176,15 @@ public class Challenge   {
       @NotNull
 
     @Valid
-    public OffsetDateTime getPeriodStart() {
+    public String getPeriodStart() {
     return periodStart;
   }
 
-  public void setPeriodStart(OffsetDateTime periodStart) {
+  public void setPeriodStart(String periodStart) {
     this.periodStart = periodStart;
   }
 
-  public Challenge periodEnd(OffsetDateTime periodEnd) {
+  public Challenge periodEnd(String periodEnd) {
     this.periodEnd = periodEnd;
     return this;
   }
@@ -184,11 +197,11 @@ public class Challenge   {
       @NotNull
 
     @Valid
-    public OffsetDateTime getPeriodEnd() {
+    public String getPeriodEnd() {
     return periodEnd;
   }
 
-  public void setPeriodEnd(OffsetDateTime periodEnd) {
+  public void setPeriodEnd(String periodEnd) {
     this.periodEnd = periodEnd;
   }
 

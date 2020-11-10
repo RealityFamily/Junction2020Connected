@@ -1,11 +1,17 @@
 package io.swagger.api;
 
 import io.swagger.model.Challenge;
+
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.model.Goal;
+import io.swagger.realityfamily.Repositories.ChallengeRepository;
+import io.swagger.realityfamily.Repositories.GoalsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import org.threeten.bp.OffsetDateTime;
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -33,6 +40,12 @@ public class ChallengeApiController implements ChallengeApi {
 
     private final HttpServletRequest request;
 
+    @Autowired
+    private ChallengeRepository challengeRepository;
+
+    @Autowired
+    private GoalsRepository goalsRepository;
+
     @org.springframework.beans.factory.annotation.Autowired
     public ChallengeApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -41,14 +54,15 @@ public class ChallengeApiController implements ChallengeApi {
 
     public ResponseEntity<Challenge> getChallenge(@ApiParam(value = "",required=true) @PathVariable("challengeId") UUID challengeId
 ,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
-) {
+) throws UnsupportedEncodingException {
+       // challengeRepository.save(new Challenge(Challenge.ChallengeTypeEnum.SURVIVEORDIE, "TestChalendge", "","", goalsRepository.findAll().get(0)));
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<Challenge>(objectMapper.readValue("{\n  \"goal\" : {\n    \"balance\" : 5.962133916683182,\n    \"weightInDepositoryPipe20\" : 2.3021358869347655,\n    \"patterns\" : [ null, null ],\n    \"name\" : \"name\",\n    \"description\" : \"description\",\n    \"progress\" : 5.637376656633329,\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n    \"user\" : {\n      \"accountAuth\" : \"accountAuth\",\n      \"balance\" : 7.061401241503109,\n      \"accountName\" : \"accountName\",\n      \"accountIBAN\" : \"accountIBAN\",\n      \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n      \"instagram\" : \"https://www.instagram.com/worldverwe\",\n      \"goals\" : [ null, null ]\n    }\n  },\n  \"name\" : \"name\",\n  \"challengeType\" : \"SurviveOrDie\",\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n  \"periodStart\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"periodEnd\" : \"2000-01-23T04:56:07.000+00:00\"\n}", Challenge.class), HttpStatus.NOT_IMPLEMENTED);
+                return //new ResponseEntity<Challenge>(challengeRepository.findOne(challengeId), HttpStatus.OK);//
+                new ResponseEntity<Challenge>(objectMapper.readValue("{\n  \"goal\" : {\n    \"balance\" : 5.962133916683182,\n    \"weightInDepositoryPipe20\" : 2.3021358869347655,\n    \"patterns\" : [ null, null ],\n    \"name\" : \"name\",\n    \"description\" : \"description\",\n    \"progress\" : 5.637376656633329,\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n    \"user\" : {\n      \"accountAuth\" : \"accountAuth\",\n      \"balance\" : 7.061401241503109,\n      \"accountName\" : \"accountName\",\n      \"accountIBAN\" : \"accountIBAN\",\n      \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n      \"instagram\" : \"https://www.instagram.com/worldverwe\",\n      \"goals\" : [ null, null ]\n    }\n  },\n  \"name\" : \"name\",\n  \"challengeType\" : \"SurviveOrDie\",\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n  \"periodStart\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"periodEnd\" : \"2000-01-23T04:56:07.000+00:00\"\n}", Challenge.class), HttpStatus.NOT_IMPLEMENTED);
             } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Challenge>(HttpStatus.INTERNAL_SERVER_ERROR);
+                    e.printStackTrace();
             }
         }
 
@@ -58,8 +72,10 @@ public class ChallengeApiController implements ChallengeApi {
     public ResponseEntity<Void> postChallenge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Challenge body
 ,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
 ) {
+
         String accept = request.getHeader("Accept");
-        return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+        challengeRepository.save(body);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
 }
