@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,22 +66,22 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
                 holder.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
+//                        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
+//
+//                        Call<Goal> call = goalsAPI.getGoal(elements.get(position).id.toString());
+//                        call.enqueue(new Callback<Goal>() {
+//                            @Override
+//                            public void onResponse(Call<Goal> call, Response<Goal> response) {
+//                                activity.changeFragment(
 
-                        Call<Goal> call = goalsAPI.getGoal(elements.get(position).id.toString());
-                        call.enqueue(new Callback<Goal>() {
-                            @Override
-                            public void onResponse(Call<Goal> call, Response<Goal> response) {
-                                activity.changeFragment(
-                                        new GoalFragment(response.body(),"Goal")
-                                        , new DashboardFragment("Dashboard"));
-                            }
-
-                            @Override
-                            public void onFailure(Call<Goal> call, Throwable t) {
-
-                            }
-                        });
+                                        new GoalFragment(new Goal(UUID.randomUUID(), "50/30/20", "", 100, 20, 10, ),"Goal"), new DashboardFragment("Dashboard");
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<Goal> call, Throwable t) {
+//
+//                            }
+//                        });
                     }
                 });
                 break;
@@ -127,7 +128,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         }
     }
 
-    public class SmallInfo {
+    public static class SmallInfo {
         String name;
         UUID id;
 
