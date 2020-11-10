@@ -27,7 +27,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.PaymentV
     @Override
     public PaymentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new PaymentViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.dashboard_cardview_element, parent, false));
+                .inflate(R.layout.payment_card_element, parent, false));
     }
 
     @Override

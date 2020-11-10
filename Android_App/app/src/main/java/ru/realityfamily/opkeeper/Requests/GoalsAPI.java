@@ -25,7 +25,7 @@ public interface GoalsAPI {
             "Auth: vgcdhkbchjdnvhjsdl"
     })
     @GET("/goal_predict/{goalId}")
-    Call<Goal> getGoal(@Path("goalID") String goalId);
+    Call<Goal> getGoal(@Path("goalId") String goalId);
 
     @Headers({
             "Accept: application/json",

@@ -27,7 +27,7 @@ public class GoalFragment extends MyFragment {
     View thumbView;
 
     public GoalFragment(Goal goal, String title) {
-        this.goal = goal;
+        this.goal = (goal != null ? goal : new Goal());
         this.Title = title;
     }
 
@@ -44,8 +44,8 @@ public class GoalFragment extends MyFragment {
         thumbView = LayoutInflater.from(getActivity()).inflate(R.layout.seek_thumb, null, false);
 
         name.setText(goal.getName());
-        seekBarProgress.setThumb(getThumb((int) (double) goal.getWeightInDepositoryPipe20()));
-        seekBarProgress.setProgress((int) (double) goal.getWeightInDepositoryPipe20());
+        seekBarProgress.setThumb(getThumb((int) (double) goal.getProgress()));
+        seekBarProgress.setProgress((int) (double) goal.getProgress());
         seekBarProgress.setEnabled(false);
 
 

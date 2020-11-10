@@ -1,6 +1,8 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -65,8 +67,13 @@ public class Goal   {
   @Type(type="org.hibernate.type.PostgresUUIDType")
   @ManyToOne
   @JoinColumn(name = "Clients_id")
-  @JsonProperty("client")
+  @JsonIgnore
   private Client client = null;
+
+  @Type(type="org.hibernate.type.PostgresUUIDType")
+  @OneToOne(mappedBy = "goal")
+  @JsonProperty("challenge")
+  private Challenge challenge = null;
 
   public Goal id(UUID id) {
     this.id = id;
@@ -238,12 +245,27 @@ public class Goal   {
   @ApiModelProperty(value = "")
   
     @Valid
-    public Client getUser() {
+    public Client getClient() {
     return client;
   }
 
-  public void setUser(Client client) {
+  public void setClient(Client client) {
     this.client = client;
+  }
+
+  /**
+   * Get challenge
+   * @return challenge
+   **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+  public Challenge getChallenge() {
+    return challenge;
+  }
+
+  public void setChallenge(Challenge challenge) {
+    this.challenge = challenge;
   }
 
 
@@ -263,12 +285,13 @@ public class Goal   {
         Objects.equals(this.progress, goal.progress) &&
         Objects.equals(this.weightInDepositoryPipe20, goal.weightInDepositoryPipe20) &&
         Objects.equals(this.patterns, goal.patterns) &&
-        Objects.equals(this.client, goal.client);
+        Objects.equals(this.client, goal.client) &&
+            Objects.equals(this.challenge, goal.challenge);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, balance, progress, weightInDepositoryPipe20, patterns, client);
+    return Objects.hash(id, name, description, balance, progress, weightInDepositoryPipe20, patterns, client, challenge);
   }
 
   @Override
@@ -284,6 +307,7 @@ public class Goal   {
     sb.append("    weightInDepositoryPipe20: ").append(toIndentedString(weightInDepositoryPipe20)).append("\n");
     sb.append("    patterns: ").append(toIndentedString(patterns)).append("\n");
     sb.append("    user: ").append(toIndentedString(client)).append("\n");
+    sb.append("    challenge: ").append(toIndentedString(challenge)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -299,7 +323,7 @@ public class Goal   {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public Goal(String name, String description, Double balance, Double progress, Double weightInDepositoryPipe20, List<Pattern> patterns, Client client) {
+  public Goal(String name, String description, Double balance, Double progress, Double weightInDepositoryPipe20, List<Pattern> patterns, Client client, Challenge challenge) {
     this.name = name;
     this.description = description;
     this.balance = balance;
@@ -307,6 +331,7 @@ public class Goal   {
     this.weightInDepositoryPipe20 = weightInDepositoryPipe20;
     this.patterns = patterns;
     this.client = client;
+    this.challenge = challenge;
   }
 
   public Goal() {

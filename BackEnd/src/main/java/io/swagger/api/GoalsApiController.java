@@ -47,8 +47,7 @@ public class GoalsApiController implements GoalsApi {
     }
 
 
-    public ResponseEntity<List<SmallInfo>> getGoals(@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
-) {
+    public ResponseEntity<List<SmallInfo>> getGoals(@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
 

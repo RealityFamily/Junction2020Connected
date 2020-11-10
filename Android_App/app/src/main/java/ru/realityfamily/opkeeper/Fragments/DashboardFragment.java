@@ -1,6 +1,8 @@
 package ru.realityfamily.opkeeper.Fragments;
 
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,45 +57,53 @@ public class DashboardFragment extends MyFragment {
         goalsRecycler.setHasFixedSize(true);
         goalsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        List<DashboardAdapter.SmallInfo> elements = new ArrayList<>();
-        elements.add(new DashboardAdapter.SmallInfo("50/30/20", UUID.randomUUID()));
-        elements.add(new DashboardAdapter.SmallInfo("Travel to Bali", UUID.randomUUID()));
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(getString(R.string.world_server))
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
-//        Call<List<DashboardAdapter.SmallInfo>> call = goalsAPI.getGoals();
-//        call.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
-//            @Override
-//            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
-                goalsRecycler.setAdapter(new DashboardAdapter(elements, DashboardAdapter.TypeElementInfo.Goal, (MainActivity) getActivity()));
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<DashboardAdapter.SmallInfo>> call, Throwable t) {
-//
-//            }
-//        });
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.Server_Base_URL))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
+        Call<List<DashboardAdapter.SmallInfo>> call = goalsAPI.getGoals();
+        call.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
+            @Override
+            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
+                goalsRecycler.setAdapter(
+                        new DashboardAdapter(response.body(),
+                                DashboardAdapter.TypeElementInfo.Goal,
+                                (MainActivity) getActivity()
+                        )
+                );
+            }
+
+            @Override
+            public void onFailure(Call<List<DashboardAdapter.SmallInfo>> call, Throwable t) {
+                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                        + call.request().headers().toString() + "\t" + t.getMessage());
+            }
+        });
 
         challengesRecycler.setHasFixedSize(true);
         challengesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        elements = new ArrayList<>();
-        elements.add(new DashboardAdapter.SmallInfo("Keep calm and spend less", UUID.randomUUID()));
-//        ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
-//        Call<List<DashboardAdapter.SmallInfo>> call1 = challengeAPI.getChallenges();
-//        call1.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
-//            @Override
-//            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
-                challengesRecycler.setAdapter(new DashboardAdapter(elements, DashboardAdapter.TypeElementInfo.Challenge, (MainActivity) getActivity()));
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<DashboardAdapter.SmallInfo>> call, Throwable t) {
-//
-//            }
-//        });
+        ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
+        Call<List<DashboardAdapter.SmallInfo>> call1 = challengeAPI.getChallenges();
+        call1.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
+            @Override
+            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
+                challengesRecycler.setAdapter(
+                    new DashboardAdapter(
+                            response.body(),
+                            DashboardAdapter.TypeElementInfo.Challenge,
+                            (MainActivity) getActivity()
+                    )
+                );
+            }
+
+            @Override
+            public void onFailure(Call<List<DashboardAdapter.SmallInfo>> call, Throwable t) {
+                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                        + call.request().headers().toString() + "\t" + t.getMessage());
+            }
+        });
 
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(fbottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);

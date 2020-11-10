@@ -1,5 +1,6 @@
 package ru.realityfamily.opkeeper.Adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
     MainActivity activity;
 
     public DashboardAdapter(List<SmallInfo> elements, TypeElementInfo typeElement, MainActivity activity) {
-        this.elements = elements;
+        this.elements = (elements != null ? elements : new ArrayList<SmallInfo>());
         this.typeElement = typeElement;
         this.activity = activity;
     }
@@ -56,7 +57,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         holder.elementTitle.setText(elements.get(position).name);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(activity.getString(R.string.world_server))
+                .baseUrl(activity.getString(R.string.Server_Base_URL))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -66,22 +67,29 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
                 holder.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
-//
-//                        Call<Goal> call = goalsAPI.getGoal(elements.get(position).id.toString());
-//                        call.enqueue(new Callback<Goal>() {
-//                            @Override
-//                            public void onResponse(Call<Goal> call, Response<Goal> response) {
-//                                activity.changeFragment(
+                        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
 
-                                        new GoalFragment(new Goal(UUID.randomUUID(), "50/30/20", "", 100, 20, 10, ),"Goal"), new DashboardFragment("Dashboard");
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<Goal> call, Throwable t) {
-//
-//                            }
-//                        });
+                        String goalId = elements.get(position).id.toString();
+                        Call<Goal> call = goalsAPI.getGoal(goalId);
+                        call.enqueue(new Callback<Goal>() {
+                            @Override
+                            public void onResponse(Call<Goal> call, Response<Goal> response) {
+                                Log.d("RETROFIT_INFO", Integer.toString(response.code()));
+
+                                Goal temp = response.body();
+
+                                activity.changeFragment(
+                                        new GoalFragment(response.body(),"Goal"),
+                                        new DashboardFragment("Dashboard")
+                                );
+                            }
+
+                            @Override
+                            public void onFailure(Call<Goal> call, Throwable t) {
+                                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                                        + call.request().headers().toString() + "\t" + t.getMessage());
+                            }
+                        });
                     }
                 });
                 break;
@@ -101,7 +109,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
                             @Override
                             public void onFailure(Call<Challenge> call, Throwable t) {
-
+                                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                                        + call.request().headers().toString() + "\t" + t.getMessage());
                             }
                         });
                     }

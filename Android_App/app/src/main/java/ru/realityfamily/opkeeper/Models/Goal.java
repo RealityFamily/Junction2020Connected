@@ -1,5 +1,6 @@
 package ru.realityfamily.opkeeper.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +24,15 @@ public class Goal {
         this.patterns = patterns;
     }
 
-    public Goal() { }
+    public Goal() {
+        this.id = UUID.randomUUID();
+        this.name = "";
+        this.description = "";
+        this.balance = 0.0;
+        this.progress = 0.0;
+        this.weightInDepositoryPipe20 = 0.0;
+        this.patterns = new ArrayList<>();
+    }
 
     public UUID getId() {
         return id;

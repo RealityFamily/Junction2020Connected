@@ -30,12 +30,13 @@ public interface GoalApi {
     @ApiOperation(value = "", nickname = "postGoal", notes = "", tags={ "goals", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK"),
-        @ApiResponse(code = 401, message = "Authentication information is missing or invalid") })
+        @ApiResponse(code = 401, message = "Authentication information is missing or invalid") }
+        )
     @RequestMapping(value = "/goal",
-        consumes = { "application/json" },
-        method = RequestMethod.POST)
-    ResponseEntity<Void> postGoal(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Goal body
-,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<Void> postGoal(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Goal body,
+                                  @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
 );
 
 }

@@ -42,7 +42,7 @@ public class Main_Goal_Fragment extends MyFragment {
 
         seekBarBudgetProcent.setThumb(null);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.world_server))
+                .baseUrl(getString(R.string.Server_Base_URL))
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

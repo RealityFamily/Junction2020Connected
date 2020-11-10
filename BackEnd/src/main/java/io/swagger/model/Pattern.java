@@ -1,6 +1,8 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -15,7 +17,6 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -40,6 +41,10 @@ public class Pattern   {
   )
   @JsonProperty("id")
   private UUID id = null;
+
+  @Column(name = "patternName", nullable = false)
+  @JsonProperty("patternName")
+  private String patternName = null;
 
   @Column(name = "detectedStart", nullable = false)
   @JsonProperty("detectedStart")
@@ -98,7 +103,7 @@ public class Pattern   {
   @Type(type="org.hibernate.type.PostgresUUIDType")
   @ManyToOne
   @JoinColumn(name = "Goals_id")
-  @JsonProperty("goal")
+  @JsonIgnore
   private Goal goal = null;
 
   @Column(name = "detectedStart", nullable = false)
@@ -131,6 +136,27 @@ public class Pattern   {
 
   public Pattern detectedStart(String detectedStart) {
     this.detectedStart = detectedStart;
+    return this;
+  }
+
+  /**
+   * Get patternName
+   * @return patternName
+   **/
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+  @Valid
+  public String getPatternName() {
+    return patternName;
+  }
+
+  public void setPatternName(String patternName) {
+    this.patternName = patternName;
+  }
+
+  public Pattern patternName(String patternName) {
+    this.patternName = patternName;
     return this;
   }
 
@@ -317,12 +343,13 @@ public class Pattern   {
         Objects.equals(this.averageTransAmount, pattern.averageTransAmount) &&
         Objects.equals(this.patternType, pattern.patternType) &&
         Objects.equals(this.goal, pattern.goal) &&
-        Objects.equals(this.transactions, pattern.transactions);
+        Objects.equals(this.transactions, pattern.transactions) &&
+            Objects.equals(this.patternName, pattern.patternName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, detectedStart, detectedEnd, frequency, allAmount, averageTransAmount, patternType, goal, transactions);
+    return Objects.hash(id, detectedStart, detectedEnd, frequency, allAmount, averageTransAmount, patternType, goal, transactions, patternName);
   }
 
   @Override
@@ -339,6 +366,7 @@ public class Pattern   {
     sb.append("    patternType: ").append(toIndentedString(patternType)).append("\n");
     sb.append("    goal: ").append(toIndentedString(goal)).append("\n");
     sb.append("    transactions: ").append(toIndentedString(transactions)).append("\n");
+    sb.append("    patternName: ").append(toIndentedString(patternName)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -357,7 +385,9 @@ public class Pattern   {
   public Pattern() {
   }
 
-  public Pattern(String detectedStart, String detectedEnd, Long frequency, BigDecimal allAmount, BigDecimal averageTransAmount, PatternTypeEnum patternType, Goal goal, List<Transaction> transactions) {
+  public Pattern(String detectedStart, String detectedEnd, Long frequency, BigDecimal allAmount,
+                 BigDecimal averageTransAmount, PatternTypeEnum patternType, Goal goal,
+                 List<Transaction> transactions, String patternName) {
     this.detectedStart = detectedStart;
     this.detectedEnd = detectedEnd;
     this.frequency = frequency;
@@ -366,5 +396,6 @@ public class Pattern   {
     this.patternType = patternType;
     this.goal = goal;
     this.transactions = transactions;
+    this.patternName = patternName;
   }
 }
