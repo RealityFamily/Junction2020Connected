@@ -43,9 +43,8 @@ public class GoalApiController implements GoalApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> postGoal(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Goal body
-,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
-) {
+    public ResponseEntity<Void> postGoal(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Goal body,
+                                         @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth) {
 
         goalsRepository.save(body);
         String accept = request.getHeader("Accept");

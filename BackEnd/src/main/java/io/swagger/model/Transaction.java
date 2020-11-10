@@ -1,6 +1,8 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
@@ -10,7 +12,6 @@ import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -66,6 +67,7 @@ public class Transaction   {
   @Type(type="org.hibernate.type.PostgresUUIDType")
   @ManyToOne
   @JoinColumn(name = "Patterns_id")
+  @JsonIgnore
   @JsonProperty("pattern")
   private Pattern pattern = null;
 

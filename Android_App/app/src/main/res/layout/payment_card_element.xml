@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="76dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:elevation="1dp"
+    android:layout_marginBottom="@dimen/normal_margin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/normal_margin">
+
+        <ImageView
+            android:id="@+id/iconPaymentElement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/ic_group"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_toEndOf="@id/iconPaymentElement"
+            android:layout_toStartOf="@id/amountPaymentElement"
+            android:layout_marginStart="@dimen/normal_margin">
+            <TextView
+                android:id="@+id/namePaymentElement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Starbucks"
+                android:fontFamily="@font/poppins"
+                android:includeFontPadding="false"
+                android:textSize="@dimen/normal_text_size"/>
+            <TextView
+                android:id="@+id/datePaymentElement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="06.11.2020"
+                android:fontFamily="@font/poppins"
+                android:includeFontPadding="false"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/amountPaymentElement"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            tools:text="-13.96€"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="@font/poppins"
+            android:includeFontPadding="false"
+            android:textColor="@color/RedText"
+            android:textSize="@dimen/normal_text_size"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,6 +1,8 @@
 package io.swagger.model;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -12,7 +14,6 @@ import java.util.UUID;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
@@ -87,8 +88,9 @@ public class Challenge {
   private String periodEnd = null;
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
+  @OneToOne
   @JoinColumn(name = "Goals_id")
-  @JsonProperty("goal")
+  @JsonIgnore
   private Goal goal = null;
 
   public Challenge id(UUID id) {

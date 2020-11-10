@@ -4,8 +4,10 @@ import io.swagger.model.Goal;
 import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
+import io.swagger.realityfamily.Repositories.GoalsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,23 +35,27 @@ public class GoalPredictApiController implements GoalPredictApi {
 
     private final HttpServletRequest request;
 
+    @Autowired
+    private GoalsRepository goalsRepository;
+
     @org.springframework.beans.factory.annotation.Autowired
     public GoalPredictApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
     }
 
-    public ResponseEntity<Goal> getGoalPredict(@ApiParam(value = "",required=true) @PathVariable("goalId") UUID goalId
-,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
-) {
+    public ResponseEntity<Goal> getGoalPredict(@ApiParam(value = "",required=true) @PathVariable("goalId") UUID goalId,
+                                               @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth)
+    {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<Goal>(objectMapper.readValue("{\n  \"balance\" : 5.962133916683182,\n  \"weightInDepositoryPipe20\" : 2.3021358869347655,\n  \"patterns\" : [ null, null ],\n  \"name\" : \"name\",\n  \"description\" : \"description\",\n  \"progress\" : 5.637376656633329,\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n  \"user\" : {\n    \"accountAuth\" : \"accountAuth\",\n    \"balance\" : 7.061401241503109,\n    \"accountName\" : \"accountName\",\n    \"accountIBAN\" : \"accountIBAN\",\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n    \"instagram\" : \"https://www.instagram.com/worldverwe\",\n    \"goals\" : [ null, null ]\n  }\n}", Goal.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<Goal>(HttpStatus.INTERNAL_SERVER_ERROR);
+            List<Goal> goals = goalsRepository.findAll();
+            for (Goal goal : goals) {
+                if (goal.getId().equals(goalId)) {
+                    return new ResponseEntity<Goal>(goal, HttpStatus.OK);
+                }
             }
+            return new ResponseEntity<Goal>(HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<Goal>(HttpStatus.NOT_IMPLEMENTED);
