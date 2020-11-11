@@ -37,9 +37,9 @@ public interface ChallengeApi {
     @RequestMapping(value = "/challenge/{challengeId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Challenge> getChallenge(@ApiParam(value = "",required=true) @PathVariable("challengeId") UUID challengeId
-,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
-) throws UnsupportedEncodingException;
+    ResponseEntity<Challenge> getChallenge(@ApiParam(value = "",required=true) @PathVariable("challengeId") UUID challengeId,
+                                           @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth)
+            throws UnsupportedEncodingException;
 
 
     @ApiOperation(value = "", nickname = "postChallenge", notes = "", tags={ "challenge", })
@@ -49,9 +49,19 @@ public interface ChallengeApi {
     @RequestMapping(value = "/challenge",
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<Void> postChallenge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Challenge body
-,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
-);
+    ResponseEntity<Void> postChallenge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Challenge body,
+                                       @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth);
+
+
+    @ApiOperation(value = "", nickname = "deleteChallenge", notes = "", tags={ "challenge", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Authentication information is missing or invalid") })
+    @RequestMapping(value = "/challenge/{deleteId}",
+            consumes = { "application/json" },
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteChallenge(@ApiParam(value = "" ,required=true )  @PathVariable("deleteId") UUID body,
+                                       @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth);
 
 }
 

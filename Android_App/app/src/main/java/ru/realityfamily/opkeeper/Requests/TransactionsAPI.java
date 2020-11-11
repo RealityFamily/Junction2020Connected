@@ -8,14 +8,14 @@ import ru.realityfamily.opkeeper.Models.Transaction;
 public interface TransactionsAPI {
     @Headers({
             "Accept: application/json",
-            "Auth: vgcdhkbchjdnvhjsdl"
+            "Auth: 5e6c501b-2387-439b-801f-acdfdea49c3d"
     })
     @GET("/deb_cred_status")
-    Call<Integer> getDebCredStatus();
+    Call<Double> getDebCredStatus();
 
     @Headers({
             "Accept: application/json",
-            "Auth: vgcdhkbchjdnvhjsdl"
+            "Auth: 5e6c501b-2387-439b-801f-acdfdea49c3d"
     })
     @GET("/wrong_transaction")
     Call<Transaction> getWrongTransaction();

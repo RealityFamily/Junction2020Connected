@@ -23,6 +23,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-11-07T19:30:51.910Z[GMT]")
 @Api(value = "goal", description = "the goal API")
 public interface GoalApi {
@@ -36,8 +38,19 @@ public interface GoalApi {
             consumes = { "application/json" },
             method = RequestMethod.POST)
     ResponseEntity<Void> postGoal(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Goal body,
-                                  @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
-);
+                                  @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth);
+
+
+    @ApiOperation(value = "", nickname = "deleteGoal", notes = "", tags={ "goals", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Authentication information is missing or invalid") }
+    )
+    @RequestMapping(value = "/goal/{deleteId}",
+            consumes = { "application/json" },
+            method = RequestMethod.DELETE)
+    ResponseEntity<Void> deleteGoal(@ApiParam(value = "" ,required=true )  @PathVariable("deleteId") UUID body,
+                                  @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth);
 
 }
 

@@ -10,6 +10,7 @@
         android:orientation="vertical"
         android:layout_margin="@dimen/normal_margin">
         <EditText
+            android:id="@+id/newChallengeName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/challenge"/>
@@ -23,13 +24,13 @@
                 android:text="@string/challenge_roles"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@id/challengeAmount"
+                android:layout_toStartOf="@id/newChallengeAmount"
                 android:textColor="@color/TitleColor"
                 android:fontFamily="@font/poppins"
                 android:includeFontPadding="false"
                 android:textSize="@dimen/normal_text_size"/>
             <EditText
-                android:id="@+id/challengeAmount"
+                android:id="@+id/newChallengeAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/valueOfAmount"

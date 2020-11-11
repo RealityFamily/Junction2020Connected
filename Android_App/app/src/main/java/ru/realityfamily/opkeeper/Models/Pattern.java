@@ -14,13 +14,13 @@ public class Pattern {
     private BigDecimal allAmount = null;
     private BigDecimal averageTransAmount = null;
     private PatternTypeEnum patternType = null;
-    private Goal goal = null;
+    private List<Goal> goal = null;
     private List<Transaction> transactions = null;
 
 
     public Pattern(UUID id, String patternName, String detectedStart, String detectedEnd,
                    Long frequency, BigDecimal allAmount, BigDecimal averageTransAmount,
-                   PatternTypeEnum patternType, Goal goal, List<Transaction> transactions) {
+                   PatternTypeEnum patternType, List<Goal> goal, List<Transaction> transactions) {
         this.id = id;
         this.patternName = patternName;
         this.detectedStart = detectedStart;
@@ -100,11 +100,11 @@ public class Pattern {
         this.patternType = patternType;
     }
 
-    public Goal getGoal() {
+    public List<Goal> getGoal() {
         return goal;
     }
 
-    public void setGoal(Goal goal) {
+    public void setGoal(List<Goal> goal) {
         this.goal = goal;
     }
 

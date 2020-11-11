@@ -5,27 +5,14 @@ import java.util.UUID;
 
 public class Challenge {
     private UUID id = null;
-
-    public enum ChallengeTypeEnum {
-        SURVIVEORDIE("SurviveOrDie"),
-
-        WAYTOGOAL("WayToGoal");
-
-        private String value;
-
-        ChallengeTypeEnum(String value) {
-            this.value = value;
-        }
-    }
     private ChallengeTypeEnum challengeType = null;
-
     private String name = null;
-    private OffsetDateTime periodStart = null;
-    private OffsetDateTime periodEnd = null;
+    private String periodStart = null;
+    private String periodEnd = null;
     private Goal goal = null;
 
 
-    public Challenge(UUID id, ChallengeTypeEnum challengeType, String name, OffsetDateTime periodStart, OffsetDateTime periodEnd, Goal goal) {
+    public Challenge(UUID id, ChallengeTypeEnum challengeType, String name, String periodStart, String periodEnd, Goal goal) {
         this.id = id;
         this.challengeType = challengeType;
         this.name = name;
@@ -35,6 +22,12 @@ public class Challenge {
     }
 
     public Challenge() {
+        this.id = UUID.randomUUID();
+        this.challengeType = ChallengeTypeEnum.SurviveOrDie;
+        this.name = "";
+        this.periodStart = "";
+        this.periodEnd = "";
+        this.goal = new Goal();
     }
 
     public UUID getId() {
@@ -61,19 +54,19 @@ public class Challenge {
         this.name = name;
     }
 
-    public OffsetDateTime getPeriodStart() {
+    public String getPeriodStart() {
         return periodStart;
     }
 
-    public void setPeriodStart(OffsetDateTime periodStart) {
+    public void setPeriodStart(String periodStart) {
         this.periodStart = periodStart;
     }
 
-    public OffsetDateTime getPeriodEnd() {
+    public String getPeriodEnd() {
         return periodEnd;
     }
 
-    public void setPeriodEnd(OffsetDateTime periodEnd) {
+    public void setPeriodEnd(String periodEnd) {
         this.periodEnd = periodEnd;
     }
 
@@ -83,5 +76,11 @@ public class Challenge {
 
     public void setGoal(Goal goal) {
         this.goal = goal;
+    }
+
+
+    public enum ChallengeTypeEnum {
+        SurviveOrDie,
+        WayToGoal
     }
 }

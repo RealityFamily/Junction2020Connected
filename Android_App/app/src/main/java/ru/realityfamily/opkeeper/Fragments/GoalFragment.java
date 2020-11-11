@@ -37,6 +37,8 @@ public class GoalFragment extends MyFragment {
         View v = inflater.inflate(R.layout.goal_fragment, container, false);
 
         TextView name = v.findViewById(R.id.goalName);
+        TextView description = v.findViewById(R.id.goalDescription);
+        TextView procent = v.findViewById(R.id.goalProcentAmount);
         AppCompatSeekBar seekBarProgress = v.findViewById(R.id.seekBarGoalProcent);
         Button shareBtn = v.findViewById(R.id.shareGoal);
         RecyclerView recyclerView = v.findViewById(R.id.goalPattenrsRecycler);
@@ -44,6 +46,8 @@ public class GoalFragment extends MyFragment {
         thumbView = LayoutInflater.from(getActivity()).inflate(R.layout.seek_thumb, null, false);
 
         name.setText(goal.getName());
+        description.setText(goal.getDescription());
+        procent.setText(goal.getWeightInDepositoryPipe20() + "%");
         seekBarProgress.setThumb(getThumb((int) (double) goal.getProgress()));
         seekBarProgress.setProgress((int) (double) goal.getProgress());
         seekBarProgress.setEnabled(false);

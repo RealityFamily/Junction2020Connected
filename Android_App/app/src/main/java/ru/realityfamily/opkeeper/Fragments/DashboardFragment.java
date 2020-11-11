@@ -8,9 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,17 +30,22 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.realityfamily.opkeeper.Adapters.DashboardAdapter;
 import ru.realityfamily.opkeeper.MainActivity;
+import ru.realityfamily.opkeeper.Models.Goal;
 import ru.realityfamily.opkeeper.R;
 import ru.realityfamily.opkeeper.Requests.ChallengeAPI;
 import ru.realityfamily.opkeeper.Requests.GoalsAPI;
 
 public class DashboardFragment extends MyFragment {
 
+    CardView mainGoalCard;
+    TextView mainGoalTitle;
     RecyclerView goalsRecycler;
     RecyclerView challengesRecycler;
     FrameLayout fbottomSheet;
     ImageButton addGoal;
     ImageButton addChallenge;
+
+    BottomSheetBehavior bottomSheetBehavior;
 
     public DashboardFragment(String title) {
         Title = title;
@@ -53,6 +61,8 @@ public class DashboardFragment extends MyFragment {
         fbottomSheet = v.findViewById(R.id.bottomSheetContainer);
         addGoal = v.findViewById(R.id.addGoal);
         addChallenge = v.findViewById(R.id.addChallenge);
+        mainGoalCard = v.findViewById(R.id.dashboardCard);
+        mainGoalTitle = v.findViewById(R.id.elementTitle);
 
         goalsRecycler.setHasFixedSize(true);
         goalsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -66,12 +76,17 @@ public class DashboardFragment extends MyFragment {
         call.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
             @Override
             public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
-                goalsRecycler.setAdapter(
-                        new DashboardAdapter(response.body(),
-                                DashboardAdapter.TypeElementInfo.Goal,
-                                (MainActivity) getActivity()
-                        )
-                );
+                for (DashboardAdapter.SmallInfo element : response.body()) {
+                    if (element.getName().equals("50/30/20")) {
+                        mainGoalTitle.setText(element.getName());
+                        mainGoalCard.setOnClickListener(getListener(element.getName()));
+                    }
+                }
+
+                DashboardAdapter adapter = new DashboardAdapter(DashboardAdapter.TypeElementInfo.Goal,
+                        (MainActivity) getActivity());
+                goalsRecycler.setAdapter(adapter);
+                new ItemTouchHelper(adapter.swipeCallBack).attachToRecyclerView(goalsRecycler);
             }
 
             @Override
@@ -89,13 +104,10 @@ public class DashboardFragment extends MyFragment {
         call1.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
             @Override
             public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
-                challengesRecycler.setAdapter(
-                    new DashboardAdapter(
-                            response.body(),
-                            DashboardAdapter.TypeElementInfo.Challenge,
-                            (MainActivity) getActivity()
-                    )
-                );
+                DashboardAdapter adapter = new DashboardAdapter(DashboardAdapter.TypeElementInfo.Challenge,
+                        (MainActivity) getActivity());
+                challengesRecycler.setAdapter(adapter);
+                new ItemTouchHelper(adapter.swipeCallBack).attachToRecyclerView(challengesRecycler);
             }
 
             @Override
@@ -105,16 +117,18 @@ public class DashboardFragment extends MyFragment {
             }
         });
 
-        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(fbottomSheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(fbottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottomSheetBehavior.setHideable(true);
+
+        DashboardFragment dashboardFragment = this;
 
         addGoal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.bottomSheetContainer, new AddGoalFragment()).commit();
+                        .replace(R.id.bottomSheetContainer, new AddGoalFragment(dashboardFragment)).commit();
             }
         });
         addChallenge.setOnClickListener(new View.OnClickListener() {
@@ -122,10 +136,47 @@ public class DashboardFragment extends MyFragment {
             public void onClick(View v) {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.bottomSheetContainer, new AddChallengeFragment()).commit();
+                        .replace(R.id.bottomSheetContainer, new AddChallengeFragment(dashboardFragment)).commit();
             }
         });
 
         return v;
+    }
+
+    private View.OnClickListener getListener(String goalId) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(getString(R.string.Server_Base_URL))
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
+
+                Call<Goal> call = goalsAPI.getGoal(goalId);
+                call.enqueue(new Callback<Goal>() {
+                    @Override
+                    public void onResponse(Call<Goal> call, Response<Goal> response) {
+                        ((MainActivity) getActivity()).changeFragment(
+                                new Main_Goal_Fragment(),
+                                new DashboardFragment("Dashboard")
+                        );
+                    }
+
+                    @Override
+                    public void onFailure(Call<Goal> call, Throwable t) {
+                        Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                                + call.request().headers().toString() + "\t" + t.getMessage());
+                    }
+                });
+            }
+        };
+    }
+
+    public void refreshRecyclerViewData() {
+        goalsRecycler.getAdapter().notifyDataSetChanged();
+        challengesRecycler.getAdapter().notifyDataSetChanged();
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
     }
 }

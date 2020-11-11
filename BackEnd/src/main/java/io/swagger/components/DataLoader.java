@@ -1,27 +1,23 @@
 package io.swagger.components;
 
-import io.swagger.model.*;
 import io.swagger.realityfamily.Repositories.CompanyRepository;
 import io.swagger.realityfamily.Repositories.TransactionsRepository;
-import io.swagger.realityfamily.Repositories.UsersRepository;
+import io.swagger.realityfamily.Repositories.ClientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import org.threeten.bp.*;
-
-import java.util.*;
 
 @Component
     public class DataLoader implements ApplicationRunner {
 
-        private UsersRepository usersRepository;
+        private ClientsRepository clientsRepository;
         private TransactionsRepository transactionsRepository;
         private CompanyRepository companyRepository;
 
         @Autowired
-        public DataLoader(UsersRepository usersRepository, TransactionsRepository transactionsRepository, CompanyRepository companyRepository) {
-            this.usersRepository = usersRepository;
+        public DataLoader(ClientsRepository clientsRepository, TransactionsRepository transactionsRepository, CompanyRepository companyRepository) {
+            this.clientsRepository = clientsRepository;
             this.transactionsRepository = transactionsRepository;
             this.companyRepository = companyRepository;
         }

@@ -3,12 +3,16 @@ package io.swagger.api;
 import io.swagger.model.Challenge;
 
 import java.io.UnsupportedEncodingException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import io.swagger.model.Goal;
 import io.swagger.realityfamily.Repositories.ChallengeRepository;
+import io.swagger.realityfamily.Repositories.ClientsRepository;
 import io.swagger.realityfamily.Repositories.GoalsRepository;
+import io.swagger.realityfamily.Repositories.PatternsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +45,12 @@ public class ChallengeApiController implements ChallengeApi {
 
     @Autowired
     private ChallengeRepository challengeRepository;
-
     @Autowired
     private GoalsRepository goalsRepository;
+    @Autowired
+    private PatternsRepository patternsRepository;
+    @Autowired
+    private ClientsRepository clientsRepository;
 
     @org.springframework.beans.factory.annotation.Autowired
     public ChallengeApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -51,29 +58,51 @@ public class ChallengeApiController implements ChallengeApi {
         this.request = request;
     }
 
-    public ResponseEntity<Challenge> getChallenge(@ApiParam(value = "",required=true) @PathVariable("challengeId") UUID challengeId
-,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
+    public ResponseEntity<Challenge> getChallenge(@ApiParam(value = "", required=true) @PathVariable("challengeId") UUID challengeId,
+                                                  @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
 ) throws UnsupportedEncodingException {
-       // challengeRepository.save(new Challenge(Challenge.ChallengeTypeEnum.SURVIVEORDIE, "TestChalendge", "","", goalsRepository.findAll().get(0)));
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/json")) {
-            try {
-                return //new ResponseEntity<Challenge>(challengeRepository.findOne(challengeId), HttpStatus.OK);//
-                new ResponseEntity<Challenge>(objectMapper.readValue("{\n  \"goal\" : {\n    \"balance\" : 5.962133916683182,\n    \"weightInDepositoryPipe20\" : 2.3021358869347655,\n    \"patterns\" : [ null, null ],\n    \"name\" : \"name\",\n    \"description\" : \"description\",\n    \"progress\" : 5.637376656633329,\n    \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n    \"user\" : {\n      \"accountAuth\" : \"accountAuth\",\n      \"balance\" : 7.061401241503109,\n      \"accountName\" : \"accountName\",\n      \"accountIBAN\" : \"accountIBAN\",\n      \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n      \"instagram\" : \"https://www.instagram.com/worldverwe\",\n      \"goals\" : [ null, null ]\n    }\n  },\n  \"name\" : \"name\",\n  \"challengeType\" : \"SurviveOrDie\",\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n  \"periodStart\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"periodEnd\" : \"2000-01-23T04:56:07.000+00:00\"\n}", Challenge.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                    e.printStackTrace();
+            List<Challenge> challenges = challengeRepository.findAll();
+            for (Challenge challenge : challenges) {
+                if (challenge.getId().equals(challengeId)) {
+                    return new ResponseEntity<Challenge>(challenge, HttpStatus.OK);
+                }
             }
+            return new ResponseEntity<Challenge>(HttpStatus.NOT_FOUND);
         }
 
         return new ResponseEntity<Challenge>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Void> postChallenge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Challenge body
-,@ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth
-) {
+    public ResponseEntity<Void> postChallenge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Challenge body,
+                                              @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth) {
 
-        String accept = request.getHeader("Accept");
-        challengeRepository.save(body);
+        Challenge challenge = new Challenge();
+        Goal goal = new Goal();
+
+        goal.setName(body.getName());
+        challenge.setName(body.getName());
+        goal.setBalance(body.getGoal().getBalance());
+
+        goal.setDescription("History of challenge \"Live a week on " + body.getGoal().getBalance() + "€\"");
+        goal.setPatterns(patternsRepository.findAll());
+        goal.setClient(clientsRepository.findOne(UUID.fromString(auth)));
+
+        challenge.setPeriodStart(OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        challenge.setPeriodEnd(OffsetDateTime.now().plusWeeks(1).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+        challenge.setGoal(goal);
+        challengeRepository.save(challenge);
+
+        goal.setChallenge(challenge);
+        goalsRepository.save(goal);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteChallenge(@ApiParam(value = "" ,required=true )  @PathVariable("deleteId") UUID body,
+                                                @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth) {
+        challengeRepository.delete(body);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
