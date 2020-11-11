@@ -158,7 +158,7 @@ public class DashboardFragment extends MyFragment {
                     @Override
                     public void onResponse(Call<Goal> call, Response<Goal> response) {
                         ((MainActivity) getActivity()).changeFragment(
-                                new Main_Goal_Fragment(),
+                                new Main_Goal_Fragment("50/30/20"),
                                 new DashboardFragment("Dashboard")
                         );
                     }

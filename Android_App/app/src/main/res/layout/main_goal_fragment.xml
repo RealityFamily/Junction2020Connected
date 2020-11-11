@@ -14,219 +14,252 @@
             android:orientation="vertical"
             android:padding="@dimen/normal_padding">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:id="@+id/obligatoryTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:includeFontPadding="false"
                     android:text="Obligatory"
-                    android:fontFamily="@font/poppins"
-                    android:includeFontPadding="false"
 
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatSeekBar
-                    android:id="@+id/seekBarObligatoryProcent"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="5dp"
-                    android:paddingTop="@dimen/normal_padding"
-
-                    android:progressDrawable="@drawable/seekbar_background"
-                    android:splitTrack="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:layout_below="@id/obligatoryTitle">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatSeekBar
+                        android:id="@+id/seekBarObligatoryProcent"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:paddingTop="@dimen/normal_padding"
+
+                        android:progressDrawable="@drawable/seekbar_background"
+                        android:splitTrack="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="50%"
-                        android:textSize="15dp"
-                        android:fontFamily="@font/poppins"
-                        android:includeFontPadding="false"/>
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:src="@drawable/seekbar_thumb"
-                        android:layout_gravity="center_horizontal"/>
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:includeFontPadding="false"
+                            android:text="50%"
+                            android:textSize="10dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/seekbar_thumb" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_margin">
 
                 <TextView
+                    android:id="@+id/leisureTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:includeFontPadding="false"
                     android:text="Leisure"
-                    android:fontFamily="@font/poppins"
-                    android:includeFontPadding="false"
 
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatSeekBar
-                    android:id="@+id/seekBarLeisureProcent"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="5dp"
-                    android:paddingTop="@dimen/normal_padding"
-
-                    android:progressDrawable="@drawable/seekbar_background"
-                    android:splitTrack="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.3"
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:layout_below="@id/leisureTitle">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatSeekBar
+                        android:id="@+id/seekBarLeisureProcent"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:paddingTop="@dimen/normal_padding"
+
+                        android:progressDrawable="@drawable/seekbar_background"
+                        android:splitTrack="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="30%"
-                        android:textSize="15dp"
-                        android:fontFamily="@font/poppins"
-                        android:includeFontPadding="false"/>
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.3"
+                        app:layout_constraintStart_toStartOf="parent">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/seekbar_thumb" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:includeFontPadding="false"
+                            android:text="30%"
+                            android:textSize="10dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/seekbar_thumb" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_margin">
 
                 <TextView
+                    android:id="@+id/capacityTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Сapital"
                     android:fontFamily="@font/poppins"
                     android:includeFontPadding="false"
+                    android:text="Capacity"
 
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatSeekBar
-                    android:id="@+id/seekBarСapitalProcent"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="5dp"
-                    android:paddingTop="@dimen/normal_padding"
-
-                    android:progressDrawable="@drawable/seekbar_background"
-                    android:splitTrack="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.2"
-                    app:layout_constraintStart_toStartOf="parent">
+                    android:layout_below="@id/capacityTitle">
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatSeekBar
+                        android:id="@+id/seekBarCapacityProcent"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:paddingTop="@dimen/normal_padding"
+
+                        android:progressDrawable="@drawable/seekbar_background"
+                        android:splitTrack="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins"
-                        android:includeFontPadding="false"
-                        android:text="20%"
-                        android:textSize="15dp" />
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.2"
+                        app:layout_constraintStart_toStartOf="parent">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/seekbar_thumb" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:includeFontPadding="false"
+                            android:text="20%"
+                            android:textSize="10dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/seekbar_thumb" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/normal_margin">
 
                 <TextView
+                    android:id="@+id/statisticTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Statistics for now"
                     android:fontFamily="@font/poppins"
                     android:includeFontPadding="false"
+                    android:layout_marginBottom="10dp"
 
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"/>
 
-                <androidx.appcompat.widget.AppCompatSeekBar
-                    android:id="@+id/seekBarBudgetProcent"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="5dp"
-                    android:paddingTop="@dimen/normal_padding"
-
-                    android:progressDrawable="@drawable/seekbar_background"
-                    android:splitTrack="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/challengeBalance"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:fontFamily="@font/poppins"
-                    android:includeFontPadding="false"
-                    android:text="expenses"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/white"
-                    android:textSize="13sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.97" />
-                <TextView
-                    android:id="@+id/challengeAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="30dp"
-                    android:fontFamily="@font/poppins"
-                    android:includeFontPadding="false"
-                    android:textAlignment="textEnd"
-                    android:textColor="@color/darkOrange"
-                    android:textSize="13sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.97"
-                    android:text="income" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_below="@id/statisticTitle">
+
+                    <androidx.appcompat.widget.AppCompatSeekBar
+                        android:id="@+id/seekBarBudgetProcent"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp"
+
+                        android:progressDrawable="@drawable/seekbar_background"
+                        android:splitTrack="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/challengeBalance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:fontFamily="@font/poppins"
+                        android:includeFontPadding="false"
+                        android:text="expenses"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.69" />
+
+                    <TextView
+                        android:id="@+id/challengeAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="30dp"
+                        android:fontFamily="@font/poppins"
+                        android:includeFontPadding="false"
+                        android:text="income"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/darkOrange"
+                        android:textSize="13sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.58000004" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"

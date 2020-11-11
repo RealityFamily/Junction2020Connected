@@ -19,12 +19,17 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.Call;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.realityfamily.opkeeper.Adapters.PaymentAdapter;
 import ru.realityfamily.opkeeper.Models.Pattern;
 import ru.realityfamily.opkeeper.R;
 import ru.realityfamily.opkeeper.Requests.PatternAPI;
 import ru.realityfamily.opkeeper.Requests.TransactionsAPI;
 
 public class Main_Goal_Fragment extends MyFragment {
+
+    public Main_Goal_Fragment(String Title) {
+        this.Title = Title;
+    }
 
     @Nullable
     @Override
@@ -33,7 +38,7 @@ public class Main_Goal_Fragment extends MyFragment {
 
         AppCompatSeekBar seekBarObligatoryProcent = v.findViewById(R.id.seekBarObligatoryProcent);
         AppCompatSeekBar seekBarLeisureProcent = v.findViewById(R.id.seekBarLeisureProcent);
-        AppCompatSeekBar seekBarСapitalProcent = v.findViewById(R.id.seekBarСapitalProcent);
+        AppCompatSeekBar seekBarСapitalProcent = v.findViewById(R.id.seekBarCapacityProcent);
         AppCompatSeekBar seekBarBudgetProcent = v.findViewById(R.id.seekBarBudgetProcent);
 
         RecyclerView budgetLeaksRecycler = v.findViewById(R.id.budgetLeaksRecycler);
@@ -72,6 +77,19 @@ public class Main_Goal_Fragment extends MyFragment {
 
         budgetLeaksRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         PatternAPI patternAPI = retrofit.create(PatternAPI.class);
+        Call<List<Pattern>> call1 = patternAPI.getPatterns();
+        call1.enqueue(new Callback<List<Pattern>>() {
+            @Override
+            public void onResponse(Call<List<Pattern>> call, Response<List<Pattern>> response) {
+                budgetLeaksRecycler.setAdapter(new PaymentAdapter(null, response.body()));
+            }
+
+            @Override
+            public void onFailure(Call<List<Pattern>> call, Throwable t) {
+                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                        + call.request().headers().toString() + "\t" + t.getMessage());
+            }
+        });
 
         return v;
     }

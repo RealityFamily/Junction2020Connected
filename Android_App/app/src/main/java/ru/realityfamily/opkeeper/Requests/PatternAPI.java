@@ -25,7 +25,7 @@ public interface PatternAPI {
             "Auth: 5e6c501b-2387-439b-801f-acdfdea49c3d"
     })
     @GET("/pattern/{patternId}")
-    Call<List<Pattern>> getPattern(@Path("patternId") String patternId);
+    Call<Pattern> getPattern(@Path("patternId") String patternId);
 
     @Headers({
             "Accept: application/json",
