@@ -2,10 +2,7 @@ package io.swagger.model;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -60,8 +57,9 @@ public class Goal   {
   private Double weightInDepositoryPipe20 = null;
 
   @ElementCollection
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.LAZY)
   @JsonProperty("patterns")
+  @JsonBackReference
   @Valid
   private List<Pattern> patterns = null;
 

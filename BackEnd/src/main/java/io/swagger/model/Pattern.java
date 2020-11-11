@@ -2,10 +2,7 @@ package io.swagger.model;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Goal;
@@ -101,8 +98,8 @@ public class Pattern   {
   private PatternTypeEnum patternType = null;
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
-  @ManyToMany
-  @JsonIgnore
+  @ManyToMany(mappedBy = "patterns")
+  @JsonProperty("goals")
   private List<Goal> goals = null;
 
   @Column(name = "detectedStart", nullable = false)
