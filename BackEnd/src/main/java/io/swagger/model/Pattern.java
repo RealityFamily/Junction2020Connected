@@ -101,10 +101,9 @@ public class Pattern   {
   private PatternTypeEnum patternType = null;
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
-  @ManyToOne
-  @JoinColumn(name = "Goals_id")
+  @ManyToMany
   @JsonIgnore
-  private Goal goal = null;
+  private List<Goal> goals = null;
 
   @Column(name = "detectedStart", nullable = false)
   @ElementCollection
@@ -278,8 +277,8 @@ public class Pattern   {
     this.patternType = patternType;
   }
 
-  public Pattern goal(Goal goal) {
-    this.goal = goal;
+  public Pattern goal(List<Goal> goals) {
+    this.goals = goals;
     return this;
   }
 
@@ -290,12 +289,12 @@ public class Pattern   {
   @ApiModelProperty(value = "")
   
     @Valid
-    public Goal getGoal() {
-    return goal;
+    public List<Goal> getGoal() {
+    return goals;
   }
 
-  public void setGoal(Goal goal) {
-    this.goal = goal;
+  public void setGoal(List<Goal> goals) {
+    this.goals = goals;
   }
 
   public Pattern transactions(List<Transaction> transactions) {
@@ -342,14 +341,14 @@ public class Pattern   {
         Objects.equals(this.allAmount, pattern.allAmount) &&
         Objects.equals(this.averageTransAmount, pattern.averageTransAmount) &&
         Objects.equals(this.patternType, pattern.patternType) &&
-        Objects.equals(this.goal, pattern.goal) &&
+        Objects.equals(this.goals, pattern.goals) &&
         Objects.equals(this.transactions, pattern.transactions) &&
             Objects.equals(this.patternName, pattern.patternName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, detectedStart, detectedEnd, frequency, allAmount, averageTransAmount, patternType, goal, transactions, patternName);
+    return Objects.hash(id, detectedStart, detectedEnd, frequency, allAmount, averageTransAmount, patternType, goals, transactions, patternName);
   }
 
   @Override
@@ -364,7 +363,7 @@ public class Pattern   {
     sb.append("    allAmount: ").append(toIndentedString(allAmount)).append("\n");
     sb.append("    averageTransAmount: ").append(toIndentedString(averageTransAmount)).append("\n");
     sb.append("    patternType: ").append(toIndentedString(patternType)).append("\n");
-    sb.append("    goal: ").append(toIndentedString(goal)).append("\n");
+    sb.append("    goal: ").append(toIndentedString(goals)).append("\n");
     sb.append("    transactions: ").append(toIndentedString(transactions)).append("\n");
     sb.append("    patternName: ").append(toIndentedString(patternName)).append("\n");
     sb.append("}");
@@ -386,7 +385,7 @@ public class Pattern   {
   }
 
   public Pattern(String detectedStart, String detectedEnd, Long frequency, BigDecimal allAmount,
-                 BigDecimal averageTransAmount, PatternTypeEnum patternType, Goal goal,
+                 BigDecimal averageTransAmount, PatternTypeEnum patternType, List<Goal> goals,
                  List<Transaction> transactions, String patternName) {
     this.detectedStart = detectedStart;
     this.detectedEnd = detectedEnd;
@@ -394,7 +393,7 @@ public class Pattern   {
     this.allAmount = allAmount;
     this.averageTransAmount = averageTransAmount;
     this.patternType = patternType;
-    this.goal = goal;
+    this.goals = goals;
     this.transactions = transactions;
     this.patternName = patternName;
   }

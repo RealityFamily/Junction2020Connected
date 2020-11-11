@@ -2,6 +2,7 @@ package ru.realityfamily.opkeeper.Requests;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -14,22 +15,23 @@ import ru.realityfamily.opkeeper.Models.Pattern;
 public interface PatternAPI {
     @Headers({
             "Accept: application/json",
-            "Auth: vgcdhkbchjdnvhjsdl"
+            "Auth: 5e6c501b-2387-439b-801f-acdfdea49c3d"
     })
     @GET("/patterns")
     Call<List<Pattern>> getPatterns();
 
     @Headers({
             "Accept: application/json",
-            "Auth: vgcdhkbchjdnvhjsdl"
+            "Auth: 5e6c501b-2387-439b-801f-acdfdea49c3d"
     })
     @GET("/pattern/{patternId}")
     Call<List<Pattern>> getPattern(@Path("patternId") String patternId);
 
     @Headers({
             "Accept: application/json",
-            "Auth: vgcdhkbchjdnvhjsdl"
+            "Auth: 5e6c501b-2387-439b-801f-acdfdea49c3d",
+            "Content-type: application/json"
     })
     @POST("/pattern")
-    Call<Response> postPattern(@Body Pattern pattern);
+    Call<ResponseBody> postPattern(@Body Pattern pattern);
 }

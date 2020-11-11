@@ -8,12 +8,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import okhttp3.ResponseBody;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -35,12 +37,55 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         Challenge
     }
 
-    List<SmallInfo> elements;
+    List<SmallInfo> goalElements = new ArrayList<>();
+    List<SmallInfo> challengeElements = new ArrayList<>();
     TypeElementInfo typeElement;
     MainActivity activity;
 
-    public DashboardAdapter(List<SmallInfo> elements, TypeElementInfo typeElement, MainActivity activity) {
-        this.elements = (elements != null ? elements : new ArrayList<SmallInfo>());
+    public DashboardAdapter(TypeElementInfo typeElement, MainActivity activity) {
+        DashboardAdapter adapter = this;
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(activity.getString(R.string.Server_Base_URL))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
+        Call<List<DashboardAdapter.SmallInfo>> call = goalsAPI.getGoals();
+        call.enqueue(new Callback<List<SmallInfo>>() {
+            @Override
+            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
+                List<DashboardAdapter.SmallInfo> elements = new ArrayList<>();
+                for (DashboardAdapter.SmallInfo element : response.body()) {
+                    if (!element.getName().equals("50/30/20")) {
+                        goalElements.add(element);
+                    }
+                }
+                NotifyAllElements();
+            }
+            @Override
+            public void onFailure(Call<List<SmallInfo>> call, Throwable t) {
+                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                        + call.request().headers().toString() + "\t" + t.getMessage());
+            }
+        });
+
+
+        ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
+        Call<List<DashboardAdapter.SmallInfo>> call1 = challengeAPI.getChallenges();
+        call1.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
+            @Override
+            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
+                challengeElements = response.body();
+                NotifyAllElements();
+            }
+            @Override
+            public void onFailure(Call<List<DashboardAdapter.SmallInfo>> call, Throwable t) {
+                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                        + call.request().headers().toString() + "\t" + t.getMessage());
+            }
+        });
+
         this.typeElement = typeElement;
         this.activity = activity;
     }
@@ -54,8 +99,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
     @Override
     public void onBindViewHolder(@NonNull DashboardViewHolder holder, int position) {
-        holder.elementTitle.setText(elements.get(position).name);
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(activity.getString(R.string.Server_Base_URL))
                 .addConverterFactory(GsonConverterFactory.create())
@@ -64,12 +107,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         switch (typeElement) {
 
             case Goal:
+                holder.elementTitle.setText(goalElements.get(position).name);
                 holder.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
 
-                        String goalId = elements.get(position).id.toString();
+                        String goalId = goalElements.get(position).id.toString();
                         Call<Goal> call = goalsAPI.getGoal(goalId);
                         call.enqueue(new Callback<Goal>() {
                             @Override
@@ -94,17 +138,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
                 });
                 break;
             case Challenge:
+                holder.elementTitle.setText(challengeElements.get(position).name);
                 holder.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
 
-                        Call<Challenge> call = challengeAPI.getChallenge(elements.get(position).id.toString());
+                        Call<Challenge> call = challengeAPI.getChallenge(challengeElements.get(position).id.toString());
                         call.enqueue(new Callback<Challenge>() {
                             @Override
                             public void onResponse(Call<Challenge> call, Response<Challenge> response) {
-                                activity.changeFragment(new ChallengeFragment(response.body(), "Challenge")
-                                        , new DashboardFragment("Dashboard"));
+                                activity.changeFragment(
+                                        new ChallengeFragment(response.body(), "Challenge"),
+                                        new DashboardFragment("Dashboard"));
                             }
 
                             @Override
@@ -121,7 +167,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
     @Override
     public int getItemCount() {
-        return elements.size();
+        switch (typeElement) {
+            case Goal:
+                return goalElements.size();
+            case Challenge:
+                return challengeElements.size();
+            default:
+                return Math.min(goalElements.size(), challengeElements.size());
+        }
     }
 
     class DashboardViewHolder extends RecyclerView.ViewHolder{
@@ -162,4 +215,62 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
             this.id = id;
         }
     }
+
+    public void NotifyAllElements() {
+        notifyDataSetChanged();
+    }
+
+    public ItemTouchHelper.SimpleCallback swipeCallBack = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            int position = viewHolder.getAdapterPosition();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(activity.getString(R.string.Server_Base_URL))
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            switch (typeElement) {
+                case Goal:
+                    GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
+                    Call<ResponseBody> call = goalsAPI.deleteGoal(goalElements.get(position).getId());
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                        }
+                    });
+
+                    goalElements.remove(position);
+                    break;
+                case Challenge:
+                    ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
+                    Call<ResponseBody> call1 = challengeAPI.deleteChallenge(challengeElements.get(position).getId());
+                    call1.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+                        }
+                    });
+
+                    challengeElements.remove(position);
+                    break;
+            }
+        }
+    };
 }

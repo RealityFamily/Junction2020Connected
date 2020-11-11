@@ -3,6 +3,8 @@ package io.swagger.model;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -57,9 +59,8 @@ public class Goal   {
   @JsonProperty("weightInDepositoryPipe20")
   private Double weightInDepositoryPipe20 = null;
 
-  @Column(name = "patterns", nullable = false)
   @ElementCollection
-  @OneToMany(mappedBy = "goal")
+  @ManyToMany
   @JsonProperty("patterns")
   @Valid
   private List<Pattern> patterns = null;
@@ -71,8 +72,10 @@ public class Goal   {
   private Client client = null;
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
-  @OneToOne(mappedBy = "goal")
+  @OneToOne
+  @JoinColumn(name = "Challenges_id")
   @JsonProperty("challenge")
+  @JsonIgnoreProperties("goal")
   private Challenge challenge = null;
 
   public Goal id(UUID id) {
@@ -335,5 +338,13 @@ public class Goal   {
   }
 
   public Goal() {
+    this.name = "";
+    this.description = "";
+    this.balance = 0.0;
+    this.progress = 0.0;
+    this.weightInDepositoryPipe20 = 0.0;
+    this.patterns = new ArrayList<>();
+    this.client = null;
+    this.challenge = null;
   }
 }

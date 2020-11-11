@@ -55,7 +55,9 @@ public class GoalsApiController implements GoalsApi {
 
             List<Goal> goals = goalsRepository.findAll();
             for(Goal g : goals){
-                smallInfos.add(new SmallInfo(g.getId(), g.getName()));
+                if (g.getChallenge() == null) {
+                    smallInfos.add(new SmallInfo(g.getId(), g.getName()));
+                }
             }
 
             try {
