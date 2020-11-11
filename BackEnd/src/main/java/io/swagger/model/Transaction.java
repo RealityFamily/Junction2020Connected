@@ -2,9 +2,7 @@ package io.swagger.model;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Pattern;
@@ -67,7 +65,7 @@ public class Transaction   {
   @Type(type="org.hibernate.type.PostgresUUIDType")
   @ManyToOne
   @JoinColumn(name = "Patterns_id")
-  @JsonIgnore
+  @JsonBackReference
   @JsonProperty("pattern")
   private Pattern pattern = null;
 

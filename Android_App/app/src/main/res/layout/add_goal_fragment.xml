@@ -10,9 +10,15 @@
         android:layout_margin="@dimen/normal_margin"
         android:orientation="vertical">
         <EditText
+            android:id="@+id/newGoalName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/goal"/>
+        <EditText
+            android:id="@+id/newGoalDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/description"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +51,7 @@
             android:textSize="17.5sp"
             android:layout_marginTop="@dimen/small_margin"/>
         <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/seekBarProcent"
+            android:id="@+id/newSeekBarProcent"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:paddingTop="@dimen/normal_padding"

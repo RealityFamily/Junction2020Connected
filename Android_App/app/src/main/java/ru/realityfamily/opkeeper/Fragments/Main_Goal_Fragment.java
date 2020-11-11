@@ -1,6 +1,7 @@
 package ru.realityfamily.opkeeper.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +9,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSeekBar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.List;
 
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.Call;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.realityfamily.opkeeper.Models.Pattern;
 import ru.realityfamily.opkeeper.R;
+import ru.realityfamily.opkeeper.Requests.PatternAPI;
 import ru.realityfamily.opkeeper.Requests.TransactionsAPI;
 
 public class Main_Goal_Fragment extends MyFragment {
@@ -47,18 +53,25 @@ public class Main_Goal_Fragment extends MyFragment {
                 .build();
 
         TransactionsAPI transactionsAPI = retrofit.create(TransactionsAPI.class);
-        Call<Integer> call = transactionsAPI.getDebCredStatus();
-        call.enqueue(new Callback<Integer>() {
+        Call<Double> call = transactionsAPI.getDebCredStatus();
+        call.enqueue(new Callback<Double>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                seekBarBudgetProcent.setProgress(response.body());
+            public void onResponse(Call<Double> call, Response<Double> response) {
+                if (response.isSuccessful()) {
+                    seekBarBudgetProcent.setProgress((int) (response.body() * 100));
+                }
             }
 
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-
+            public void onFailure(Call<Double> call, Throwable t) {
+                seekBarBudgetProcent.setProgress(50);
+                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                        + call.request().headers().toString() + "\t" + t.getMessage());
             }
         });
+
+        budgetLeaksRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        PatternAPI patternAPI = retrofit.create(PatternAPI.class);
 
         return v;
     }

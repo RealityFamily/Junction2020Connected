@@ -17,22 +17,77 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@id/editGoalBtn"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
             tools:text="Travel to Bali"
             android:textColor="@color/TitleColor"
             android:fontFamily="@font/poppins"
-            android:includeFontPadding="false"
+            android:layout_marginBottom="@dimen/small_margin"
             android:textSize="@dimen/normal_text_size"/>
+        <TextView
+            android:id="@+id/goalDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/goalName"
+            android:layout_toStartOf="@id/editGoalBtn"
+            android:layout_alignParentStart="true"
+            tools:text="Description"
+            android:textColor="@color/TextColor"
+            android:fontFamily="@font/poppins"
+            android:includeFontPadding="false"
+            android:layout_marginBottom="@dimen/normal_margin"
+            android:textSize="15sp"/>
         <ImageButton
             android:id="@+id/editGoalBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_group_2__1_"
             android:background="@android:color/transparent"/>
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/procentInfoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textContainer"
+        android:layout_marginBottom="@dimen/normal_margin"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/percentage_of_savings_from_the_total_amount_of_the_main_goal"
+            android:textColor="@color/TitleColor"
+            android:fontFamily="@font/poppins"
+            android:includeFontPadding="false"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:textSize="17.5sp"
+            android:textAlignment="center"/>
+        <TextView
+            android:id="@+id/goalProcentAmount"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            tools:text="15%"
+            android:textColor="@color/TitleColor"
+            android:fontFamily="@font/poppins"
+            android:includeFontPadding="false"
+            android:layout_marginBottom="@dimen/small_margin"
+            android:textSize="17.5sp"
+            android:textAlignment="center"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/seekBarGoalProcentTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/success_in_achieving_the_goal"
+        android:layout_below="@id/procentInfoContainer"
+        android:textColor="@color/TextColor"
+        android:fontFamily="@font/poppins"
+        android:includeFontPadding="false"
+        android:textSize="15sp"
+        android:layout_marginBottom="@dimen/small_margin"/>
     <androidx.appcompat.widget.AppCompatSeekBar
         android:id="@+id/seekBarGoalProcent"
         android:layout_width="match_parent"
@@ -40,8 +95,8 @@
         android:paddingTop="@dimen/normal_padding"
         android:progressDrawable="@drawable/seekbar_background"
         android:thumb="@drawable/seekbar_thumb"
-        android:splitTrack="false"
-        android:layout_below="@id/textContainer"/>
+        android:layout_below="@id/seekBarGoalProcentTitle"
+        android:splitTrack="false"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/goalPattenrsRecycler"

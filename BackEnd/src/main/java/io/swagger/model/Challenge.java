@@ -2,10 +2,7 @@ package io.swagger.model;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Goal;
@@ -39,41 +36,6 @@ public class Challenge {
   @JsonProperty("id")
   private UUID id = null;
 
-  /**
-   * Gets or Sets challengeType
-   */
-  public enum ChallengeTypeEnum {
-    SURVIVEORDIE("SurviveOrDie"),
-    
-    WAYTOGOAL("WayToGoal");
-
-    private String value;
-
-    ChallengeTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static ChallengeTypeEnum fromValue(String text) {
-      for (ChallengeTypeEnum b : ChallengeTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
-
-  @Column(name = "challengeType", nullable = false)
-  @JsonProperty("challengeType")
-  private ChallengeTypeEnum challengeType = null;
-
   @Column(name = "name", nullable = false)
   @JsonProperty("name")
   private String name = null;
@@ -88,9 +50,9 @@ public class Challenge {
   private String periodEnd = null;
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
-  @OneToOne
-  @JoinColumn(name = "Goals_id")
-  @JsonIgnore
+  @OneToOne(mappedBy = "challenge")
+  @JsonProperty("goal")
+  @JsonIgnoreProperties("challenge")
   private Goal goal = null;
 
   public Challenge id(UUID id) {
@@ -101,8 +63,7 @@ public class Challenge {
   public Challenge() {
   }
 
-  public Challenge(ChallengeTypeEnum challengeType, String name, String periodStart, String periodEnd, Goal goal) {
-    this.challengeType = challengeType;
+  public Challenge(String name, String periodStart, String periodEnd, Goal goal) {
     this.name = name;
     this.periodStart = periodStart;
     this.periodEnd = periodEnd;
@@ -123,31 +84,6 @@ public class Challenge {
 
   public void setId(UUID id) {
     this.id = id;
-  }
-
-  public Challenge challengeType(ChallengeTypeEnum challengeType) {
-    this.challengeType = challengeType;
-    return this;
-  }
-
-  /**
-   * Get challengeType
-   * @return challengeType
-  **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    public ChallengeTypeEnum getChallengeType() {
-    return challengeType;
-  }
-
-  public void setChallengeType(ChallengeTypeEnum challengeType) {
-    this.challengeType = challengeType;
-  }
-
-  public Challenge name(String name) {
-    this.name = name;
-    return this;
   }
 
   /**
@@ -239,7 +175,6 @@ public class Challenge {
     }
     Challenge challenge = (Challenge) o;
     return Objects.equals(this.id, challenge.id) &&
-        Objects.equals(this.challengeType, challenge.challengeType) &&
         Objects.equals(this.name, challenge.name) &&
         Objects.equals(this.periodStart, challenge.periodStart) &&
         Objects.equals(this.periodEnd, challenge.periodEnd) &&
@@ -248,7 +183,7 @@ public class Challenge {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, challengeType, name, periodStart, periodEnd, goal);
+    return Objects.hash(id, name, periodStart, periodEnd, goal);
   }
 
   @Override
@@ -257,7 +192,6 @@ public class Challenge {
     sb.append("class Challenge {\n");
     
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    challengeType: ").append(toIndentedString(challengeType)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    periodStart: ").append(toIndentedString(periodStart)).append("\n");
     sb.append("    periodEnd: ").append(toIndentedString(periodEnd)).append("\n");

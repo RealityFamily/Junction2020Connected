@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ru.realityfamily.opkeeper.Adapters.PaymentAdapter;
 import ru.realityfamily.opkeeper.Models.Challenge;
+import ru.realityfamily.opkeeper.Models.Goal;
 import ru.realityfamily.opkeeper.R;
 
 public class ChallengeFragment extends MyFragment {
@@ -49,8 +50,8 @@ public class ChallengeFragment extends MyFragment {
         seekBarChallengeProcent.setEnabled(false);
 
         seekBarChallengeProcent.setProgress((int) (double) (challenge.getGoal().getBalance() * 100 / challenge.getGoal().getProgress()));
-        challengeBalance.setText((int) (double) challenge.getGoal().getBalance());
-        challengeAmount.setText((int) (double) challenge.getGoal().getProgress());
+        challengeBalance.setText(Double.toString(challenge.getGoal().getBalance()));
+        challengeAmount.setText(Double.toString(challenge.getGoal().getProgress()));
 
         challengePatternsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         challengePatternsRecycler.setHasFixedSize(true);
