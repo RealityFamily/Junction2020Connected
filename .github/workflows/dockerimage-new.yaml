@@ -14,4 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: docker build /home/cbi/actions_runner/_work/Junction2020Connected/Junction2020Connected/BackEnd/target/swagger-spring-1.0.1.jar --file BackEnd/target/Dockerfile --tag realityfamily/dockervm:javaback$(date +%s)
+      run: docker build /home/cbi/actions-runner/_work/Junction2020Connected/Junction2020Connected/BackEnd/target/swagger-spring-1.0.1.jar --file /home/cbi/actions-runner/_work/Junction2020Connected/Junction2020Connected/BackEnd/target/Dockerfile --tag realityfamily/dockervm:javaback$(date +%s)
