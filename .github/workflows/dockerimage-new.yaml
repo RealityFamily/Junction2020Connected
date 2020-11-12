@@ -1,7 +1,10 @@
 name: Docker image
 
-on: [push]
-
+on:
+  push:
+    branches: [ feature/AutoBuild ]
+  pull_request:
+    branches: [ feature/AutoBuild ]
 jobs:
 
   build:
@@ -11,4 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: mvn -B package --file BackEnd/pom.xml && docker build ./Backend/target/*.jar --file Backend/target/Dockerfile --tag realityfamily/dockervm:javaback$(date +%s)
