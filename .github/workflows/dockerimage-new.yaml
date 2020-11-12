@@ -14,4 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: docker build /home/cbi/actions-runner/_work/Junction2020Connected/Junction2020Connected/BackEnd/target --file BackEnd/target/Dockerfile --tag realityfamily/dockervm:javaback$(date +%s)
+      run: sudo docker build /home/cbi/actions-runner/_work/Junction2020Connected/Junction2020Connected/BackEnd/target --file BackEnd/target/Dockerfile --tag realityfamily/dockervm:javaback$(date +%s)
