@@ -14,4 +14,4 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build the Docker image
-      run: mvn -B package --file BackEnd/pom.xml && docker build /home/cbi/actions-runner/_work/Junction2020Connected/Junction2020Connected/BackEnd/target --file BackEnd/target/Dockerfile --tag realityfamily/dockervm:javaback && docker login -u="realityfamily" -p="MicrosoftShit1997" && docker push realityfamily/dockervm:javaback && docker run —name external —restart=always -p 8090:8080 -d realityfamily/dockervm:javaback
+      run: mvn -B package --file BackEnd/pom.xml && docker build /home/cbi/actions-runner/_work/Junction2020Connected/Junction2020Connected/BackEnd/target --file BackEnd/target/Dockerfile --tag realityfamily/dockervm:javaback && docker push realityfamily/dockervm:javaback
