@@ -3,6 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.*;
+import com.sun.istack.internal.Nullable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Goal;
@@ -27,6 +28,7 @@ import javax.validation.constraints.*;
 @Table(name = "Challenges")
 public class Challenge {
 
+
   @Id
   @GeneratedValue(generator = "UUID")
   @GenericGenerator(
@@ -50,7 +52,7 @@ public class Challenge {
   private String periodEnd = null;
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
-  @OneToOne(mappedBy = "challenge")
+  @OneToOne(mappedBy = "challenge", cascade = CascadeType.ALL)
   @JsonProperty("goal")
   @JsonIgnoreProperties("challenge")
   private Goal goal = null;
