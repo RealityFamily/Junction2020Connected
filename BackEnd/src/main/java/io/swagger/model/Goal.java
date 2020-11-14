@@ -3,6 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.*;
+import com.sun.istack.internal.Nullable;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
@@ -10,6 +11,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.Type;
 import org.springframework.validation.annotation.Validated;
 
@@ -60,7 +63,6 @@ public class Goal   {
   @ManyToMany(fetch = FetchType.LAZY)
   @JsonProperty("patterns")
   @JsonBackReference
-  @Valid
   private List<Pattern> patterns = null;
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
@@ -74,6 +76,7 @@ public class Goal   {
   @JoinColumn(name = "Challenges_id")
   @JsonProperty("challenge")
   @JsonIgnoreProperties("goal")
+  @NotFound(action = NotFoundAction.IGNORE)
   private Challenge challenge = null;
 
   public Goal id(UUID id) {

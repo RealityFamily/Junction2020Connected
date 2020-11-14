@@ -78,24 +78,26 @@ public class ChallengeApiController implements ChallengeApi {
     public ResponseEntity<Void> postChallenge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Challenge body,
                                               @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth) {
 
-        Challenge challenge = new Challenge();
-        Goal goal = new Goal();
+        if(body != null){
+            Challenge challenge = body;
+            if(body.getGoal() != null){
+                Goal goal = body.getGoal();
 
-        goal.setName(body.getName());
-        challenge.setName(body.getName());
-        goal.setBalance(body.getGoal().getBalance());
+                //checking if goal exist
+                String goalName =  goal.getName();
+                Goal instance = goalsRepository.findByName(goalName);
+                if(goal.getName().equals(instance.getName()))
+                    //goal = instance;
+                    goal.setName("UndefinedGoal"+(int)Math.random()*1000);
 
-        goal.setDescription("History of challenge \"Live a week on " + body.getGoal().getBalance() + "€\"");
-        goal.setPatterns(patternsRepository.findAll());
-        goal.setClient(clientsRepository.findOne(UUID.fromString(auth)));
+                // setting goal challenge in goal and goal in challenge
+                goal.setChallenge(challenge);
+                challenge.setGoal(goal);
+                //goalsRepository.save(goal);
+                challengeRepository.save(challenge);
+            }
+        }
 
-        challenge.setPeriodStart(OffsetDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        challenge.setPeriodEnd(OffsetDateTime.now().plusWeeks(1).format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-        challenge.setGoal(goal);
-        challengeRepository.save(challenge);
-
-        goal.setChallenge(challenge);
-        goalsRepository.save(goal);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
 

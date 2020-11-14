@@ -1,5 +1,7 @@
 package io.swagger;
 
+import io.swagger.api.ChallengeApi;
+import io.swagger.api.ChallengeApiController;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
@@ -22,7 +24,6 @@ public class Swagger2SpringBoot implements CommandLineRunner {
 
     public static void main(String[] args) throws Exception {
         new SpringApplication(Swagger2SpringBoot.class).run(args);
-
 
     }
 
