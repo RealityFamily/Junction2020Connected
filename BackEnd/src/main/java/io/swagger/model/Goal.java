@@ -3,7 +3,6 @@ package io.swagger.model;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.*;
-import com.sun.istack.internal.Nullable;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;

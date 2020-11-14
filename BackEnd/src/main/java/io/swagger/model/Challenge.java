@@ -3,10 +3,7 @@ package io.swagger.model;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.*;
-import com.sun.istack.internal.Nullable;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.Goal;
 import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
