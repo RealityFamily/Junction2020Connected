@@ -98,7 +98,7 @@ public class Pattern   {
   private PatternTypeEnum patternType = null;
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
-  @ManyToMany(mappedBy = "patterns")
+  @ManyToMany(mappedBy = "patterns",cascade = CascadeType.ALL)
   @JsonProperty("goals")
   private List<Goal> goals = null;
 

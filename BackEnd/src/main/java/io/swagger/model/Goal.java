@@ -59,7 +59,7 @@ public class Goal   {
   private Double weightInDepositoryPipe20 = null;
 
   @ElementCollection
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany()
   @JsonProperty("patterns")
   @JsonBackReference
   private List<Pattern> patterns = null;
