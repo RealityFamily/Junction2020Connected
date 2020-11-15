@@ -58,15 +58,6 @@ public class GoalApiController implements GoalApi {
     public ResponseEntity<Void> postGoal(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Goal body,
                                          @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth) {
         if (auth != null) {
-            //Goal goal = new Goal();
-            /*goal.setName(body.getName());
-            goal.setDescription(body.getDescription());
-            goal.setBalance(body.getBalance());
-            goal.setWeightInDepositoryPipe20(body.getWeightInDepositoryPipe20());
-
-            goal.setPatterns(patternsRepository.findAll());
-            goal.setClient(clientsRepository.findOne(UUID.fromString(auth)));
-*/
             goalsRepository.save(body);
             String accept = request.getHeader("Accept");
             return new ResponseEntity<Void>(HttpStatus.OK);
