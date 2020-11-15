@@ -23,6 +23,11 @@ import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "Challenges")
+/*
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
+*/
 public class Challenge {
 
 
@@ -51,7 +56,7 @@ public class Challenge {
   @Type(type="org.hibernate.type.PostgresUUIDType")
   @OneToOne(mappedBy = "challenge", cascade = CascadeType.ALL)
   @JsonProperty("goal")
-  @JsonIgnoreProperties("challenge")
+  //@JsonIgnoreProperties("challenge")
   private Goal goal = null;
 
   public Challenge id(UUID id) {

@@ -26,6 +26,7 @@ import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -58,9 +59,39 @@ public class GoalApiController implements GoalApi {
     public ResponseEntity<Void> postGoal(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Goal body,
                                          @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth) {
         if (auth != null) {
-            goalsRepository.save(body);
-            String accept = request.getHeader("Accept");
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            List<Pattern> allPatterns = patternsRepository.findAll();
+            if(body.getName().equals("50/30/20")){
+                for(Pattern p : allPatterns){
+                    List<Goal> goals = p.getGoal();
+                    Goal goal = goalsRepository.save(body);
+                    goalsRepository.findByName("");
+                    goals.add(goal);
+                    p.setGoal(goals);
+                    patternsRepository.save(p);
+                }
+                body.setPatterns(allPatterns);
+                goalsRepository.save(body);
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            }
+            else if(body!= null) {// all goals creation excluding the 50/30/20
+                    List<Pattern> patternsToSet= new ArrayList<>();
+                for(Pattern p : allPatterns){
+                        if(p.getPatternType()== Pattern.PatternTypeEnum.LEISURE){
+                            patternsToSet.add(p);
+                        }
+                    } // adding all leasure p inside patternToSet
+                body.setPatterns(patternsToSet);
+                Goal savedGoal = goalsRepository.save(body);
+
+                for(Pattern p : patternsToSet) {
+                    List<Goal> goals = p.getGoal();
+                    goals.add(savedGoal);
+                    p.setGoal(goals);
+                    patternsRepository.save(p);
+                }
+                return new ResponseEntity<Void>(HttpStatus.OK);
+            }else
+            return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
         }

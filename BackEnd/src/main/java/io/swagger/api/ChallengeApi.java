@@ -43,11 +43,11 @@ public interface ChallengeApi {
 
 
     @ApiOperation(value = "", nickname = "postChallenge", notes = "", tags={ "challenge", })
-    @ApiResponses(value = { 
+    @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK"),
         @ApiResponse(code = 401, message = "Authentication information is missing or invalid") })
     @RequestMapping(value = "/challenge",
-        consumes = { "application/json" },
+            consumes = { "application/json" },
         method = RequestMethod.POST)
     ResponseEntity<Void> postChallenge(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Challenge body,
                                        @ApiParam(value = "" ) @RequestHeader(value="Auth", required=false) String auth);

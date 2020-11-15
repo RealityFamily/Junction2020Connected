@@ -1414,7 +1414,7 @@ false posixrules
       <ObjectId>13395</ObjectId>
       <Comment>default administrative connection database</Comment>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>567</IntrospectionStateNumber>
+      <IntrospectionStateNumber>653</IntrospectionStateNumber>
       <Current>1</Current>
     </database>
     <role id="3" parent="1" name="pg_execute_server_program">
@@ -1466,7 +1466,7 @@ false posixrules
       <Comment>standard public schema</Comment>
       <StateNumber>287</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>568</IntrospectionStateNumber>
+      <IntrospectionStateNumber>654</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="15" parent="2" name="heap">
@@ -1556,15 +1556,15 @@ false posixrules
       <Owner>postgres</Owner>
       <StateNumber>538</StateNumber>
     </table>
-    <table id="31" parent="14" name="goals_patterns">
-      <ObjectId>16481</ObjectId>
-      <Owner>postgres</Owner>
-      <StateNumber>540</StateNumber>
-    </table>
-    <table id="32" parent="14" name="patterns">
+    <table id="31" parent="14" name="patterns">
       <ObjectId>16419</ObjectId>
       <Owner>postgres</Owner>
       <StateNumber>497</StateNumber>
+    </table>
+    <table id="32" parent="14" name="patterns_goals">
+      <ObjectId>16534</ObjectId>
+      <Owner>postgres</Owner>
+      <StateNumber>643</StateNumber>
     </table>
     <table id="33" parent="14" name="transactions">
       <ObjectId>16427</ObjectId>
@@ -1797,45 +1797,105 @@ false posixrules
       <RefKeyName>clients_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="66" parent="31" name="goals_id">
+    <column id="66" parent="31" name="id">
       <Position>1</Position>
       <DataType>uuid|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>535</StateNumber>
+      <StateNumber>491</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="67" parent="31" name="patterns_id">
+    <column id="67" parent="31" name="all_amount">
+      <Position>2</Position>
+      <DataType>numeric(19,2 digit)|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>491</StateNumber>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="68" parent="31" name="average_trans_amount">
+      <Position>3</Position>
+      <DataType>numeric(19,2 digit)|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>491</StateNumber>
+      <TypeId>1700</TypeId>
+    </column>
+    <column id="69" parent="31" name="detected_end">
+      <Position>4</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>491</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="70" parent="31" name="detected_start">
+      <Position>5</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>491</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="71" parent="31" name="frequency">
+      <Position>6</Position>
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>491</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="72" parent="31" name="pattern_name">
+      <Position>7</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>491</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="73" parent="31" name="pattern_type">
+      <Position>8</Position>
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>491</StateNumber>
+      <TypeId>23</TypeId>
+    </column>
+    <index id="74" parent="31" name="patterns_pkey">
+      <ObjectId>16425</ObjectId>
+      <StateNumber>491</StateNumber>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Primary>1</Primary>
+    </index>
+    <key id="75" parent="31" name="patterns_pkey">
+      <ObjectId>16426</ObjectId>
+      <StateNumber>491</StateNumber>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>patterns_pkey</UnderlyingIndexName>
+    </key>
+    <column id="76" parent="32" name="patterns_id">
+      <Position>1</Position>
+      <DataType>uuid|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>640</StateNumber>
+      <TypeId>2950</TypeId>
+    </column>
+    <column id="77" parent="32" name="goals_id">
       <Position>2</Position>
       <DataType>uuid|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>535</StateNumber>
+      <StateNumber>640</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <index id="68" parent="31" name="uk_8klqks76ygluy91ys38rksx0a">
-      <ObjectId>16484</ObjectId>
-      <StateNumber>537</StateNumber>
-      <ColNames>patterns_id</ColNames>
+    <index id="78" parent="32" name="uk_p3kesy0gqnxleyj6f5j2tvnfa">
+      <ObjectId>16537</ObjectId>
+      <StateNumber>642</StateNumber>
+      <ColNames>goals_id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="69" parent="31" name="uk_8klqks76ygluy91ys38rksx0a">
-      <ObjectId>16485</ObjectId>
-      <StateNumber>537</StateNumber>
-      <ColNames>patterns_id</ColNames>
-      <UnderlyingIndexName>uk_8klqks76ygluy91ys38rksx0a</UnderlyingIndexName>
-    </key>
-    <foreign-key id="70" parent="31" name="fk3pvddb97wjn2ffpol7agdf3tl">
-      <ObjectId>16501</ObjectId>
-      <StateNumber>541</StateNumber>
+    <key id="79" parent="32" name="uk_p3kesy0gqnxleyj6f5j2tvnfa">
+      <ObjectId>16538</ObjectId>
+      <StateNumber>642</StateNumber>
       <ColNames>goals_id</ColNames>
-      <RefTableId>16473</RefTableId>
-      <RefColPositions>1</RefColPositions>
-      <RefTableName>goals</RefTableName>
-      <RefKeyName>goals_pkey</RefKeyName>
-      <RefColNames>id</RefColNames>
-    </foreign-key>
-    <foreign-key id="71" parent="31" name="fkkwbc1pymq3746fsooxcwf5yqd">
-      <ObjectId>16496</ObjectId>
-      <StateNumber>540</StateNumber>
+      <UnderlyingIndexName>uk_p3kesy0gqnxleyj6f5j2tvnfa</UnderlyingIndexName>
+    </key>
+    <foreign-key id="80" parent="32" name="fkr56e1f29s5pq5iujn7sckl678">
+      <ObjectId>16544</ObjectId>
+      <StateNumber>644</StateNumber>
       <ColNames>patterns_id</ColNames>
       <RefTableId>16419</RefTableId>
       <RefColPositions>1</RefColPositions>
@@ -1843,76 +1903,16 @@ false posixrules
       <RefKeyName>patterns_pkey</RefKeyName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="72" parent="32" name="id">
-      <Position>1</Position>
-      <DataType>uuid|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>491</StateNumber>
-      <TypeId>2950</TypeId>
-    </column>
-    <column id="73" parent="32" name="all_amount">
-      <Position>2</Position>
-      <DataType>numeric(19,2 digit)|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>491</StateNumber>
-      <TypeId>1700</TypeId>
-    </column>
-    <column id="74" parent="32" name="average_trans_amount">
-      <Position>3</Position>
-      <DataType>numeric(19,2 digit)|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>491</StateNumber>
-      <TypeId>1700</TypeId>
-    </column>
-    <column id="75" parent="32" name="detected_end">
-      <Position>4</Position>
-      <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>491</StateNumber>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="76" parent="32" name="detected_start">
-      <Position>5</Position>
-      <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>491</StateNumber>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="77" parent="32" name="frequency">
-      <Position>6</Position>
-      <DataType>bigint|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>491</StateNumber>
-      <TypeId>20</TypeId>
-    </column>
-    <column id="78" parent="32" name="pattern_name">
-      <Position>7</Position>
-      <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>491</StateNumber>
-      <TypeId>1043</TypeId>
-    </column>
-    <column id="79" parent="32" name="pattern_type">
-      <Position>8</Position>
-      <DataType>integer|0s</DataType>
-      <NotNull>1</NotNull>
-      <StateNumber>491</StateNumber>
-      <TypeId>23</TypeId>
-    </column>
-    <index id="80" parent="32" name="patterns_pkey">
-      <ObjectId>16425</ObjectId>
-      <StateNumber>491</StateNumber>
-      <ColNames>id</ColNames>
-      <Unique>1</Unique>
-      <Primary>1</Primary>
-    </index>
-    <key id="81" parent="32" name="patterns_pkey">
-      <ObjectId>16426</ObjectId>
-      <StateNumber>491</StateNumber>
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>patterns_pkey</UnderlyingIndexName>
-    </key>
+    <foreign-key id="81" parent="32" name="fk9hl1qn0a3v41ejb4kwephrjsv">
+      <ObjectId>16539</ObjectId>
+      <StateNumber>643</StateNumber>
+      <ColNames>goals_id</ColNames>
+      <RefTableId>16473</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>goals</RefTableName>
+      <RefKeyName>goals_pkey</RefKeyName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
     <column id="82" parent="33" name="id">
       <Position>1</Position>
       <DataType>uuid|0s</DataType>

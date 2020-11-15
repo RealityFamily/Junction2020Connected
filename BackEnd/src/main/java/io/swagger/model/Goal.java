@@ -27,6 +27,9 @@ import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "Goals")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Goal   {
 
   @Id
@@ -59,9 +62,9 @@ public class Goal   {
   private Double weightInDepositoryPipe20 = null;
 
   @ElementCollection
-  @ManyToMany()
+  @ManyToMany(mappedBy = "goals",cascade = CascadeType.ALL)
   @JsonProperty("patterns")
-  @JsonBackReference
+  //@JsonManagedReference
   private List<Pattern> patterns = null;
 
   @Type(type="org.hibernate.type.PostgresUUIDType")
@@ -74,7 +77,7 @@ public class Goal   {
   @OneToOne
   @JoinColumn(name = "Challenges_id")
   @JsonProperty("challenge")
-  @JsonIgnoreProperties("goal")
+ // @JsonIgnoreProperties("goal")
   @NotFound(action = NotFoundAction.IGNORE)
   private Challenge challenge = null;
 

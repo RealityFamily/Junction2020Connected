@@ -28,6 +28,9 @@ import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "Patterns")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Pattern   {
 
   @Id
@@ -97,9 +100,11 @@ public class Pattern   {
   @JsonProperty("patternType")
   private PatternTypeEnum patternType = null;
 
+  @ElementCollection
   @Type(type="org.hibernate.type.PostgresUUIDType")
-  @ManyToMany(mappedBy = "patterns",cascade = CascadeType.ALL)
+  @ManyToMany()
   @JsonProperty("goals")
+// @JsonBackReference
   private List<Goal> goals = null;
 
   @Column(name = "detectedStart", nullable = false)
