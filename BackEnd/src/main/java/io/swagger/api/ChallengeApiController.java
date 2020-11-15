@@ -86,9 +86,7 @@ public class ChallengeApiController implements ChallengeApi {
                 //checking if goal exist
                 String goalName =  goal.getName();
                 Goal instance = goalsRepository.findByName(goalName);
-                if(goal.getName().equals(instance.getName()))
-                    //goal = instance;
-                    goal.setName("UndefinedGoal"+(int)Math.random()*1000);
+                goal.setName(challenge.getName());
 
                 // setting goal challenge in goal and goal in challenge
                 goal.setChallenge(challenge);
