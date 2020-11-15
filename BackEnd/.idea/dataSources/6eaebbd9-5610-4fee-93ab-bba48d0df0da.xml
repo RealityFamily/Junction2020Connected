@@ -1414,7 +1414,7 @@ false posixrules
       <ObjectId>13395</ObjectId>
       <Comment>default administrative connection database</Comment>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>653</IntrospectionStateNumber>
+      <IntrospectionStateNumber>745</IntrospectionStateNumber>
       <Current>1</Current>
     </database>
     <role id="3" parent="1" name="pg_execute_server_program">
@@ -1466,7 +1466,7 @@ false posixrules
       <Comment>standard public schema</Comment>
       <StateNumber>287</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>654</IntrospectionStateNumber>
+      <IntrospectionStateNumber>746</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="15" parent="2" name="heap">
@@ -1562,9 +1562,9 @@ false posixrules
       <StateNumber>497</StateNumber>
     </table>
     <table id="32" parent="14" name="patterns_goals">
-      <ObjectId>16534</ObjectId>
+      <ObjectId>16615</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>643</StateNumber>
+      <StateNumber>740</StateNumber>
     </table>
     <table id="33" parent="14" name="transactions">
       <ObjectId>16427</ObjectId>
@@ -1871,31 +1871,31 @@ false posixrules
       <Position>1</Position>
       <DataType>uuid|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>640</StateNumber>
+      <StateNumber>737</StateNumber>
       <TypeId>2950</TypeId>
     </column>
     <column id="77" parent="32" name="goals_id">
       <Position>2</Position>
       <DataType>uuid|0s</DataType>
       <NotNull>1</NotNull>
-      <StateNumber>640</StateNumber>
+      <StateNumber>737</StateNumber>
       <TypeId>2950</TypeId>
     </column>
     <index id="78" parent="32" name="uk_p3kesy0gqnxleyj6f5j2tvnfa">
-      <ObjectId>16537</ObjectId>
-      <StateNumber>642</StateNumber>
+      <ObjectId>16618</ObjectId>
+      <StateNumber>739</StateNumber>
       <ColNames>goals_id</ColNames>
       <Unique>1</Unique>
     </index>
     <key id="79" parent="32" name="uk_p3kesy0gqnxleyj6f5j2tvnfa">
-      <ObjectId>16538</ObjectId>
-      <StateNumber>642</StateNumber>
+      <ObjectId>16619</ObjectId>
+      <StateNumber>739</StateNumber>
       <ColNames>goals_id</ColNames>
       <UnderlyingIndexName>uk_p3kesy0gqnxleyj6f5j2tvnfa</UnderlyingIndexName>
     </key>
     <foreign-key id="80" parent="32" name="fkr56e1f29s5pq5iujn7sckl678">
-      <ObjectId>16544</ObjectId>
-      <StateNumber>644</StateNumber>
+      <ObjectId>16625</ObjectId>
+      <StateNumber>741</StateNumber>
       <ColNames>patterns_id</ColNames>
       <RefTableId>16419</RefTableId>
       <RefColPositions>1</RefColPositions>
@@ -1904,8 +1904,8 @@ false posixrules
       <RefColNames>id</RefColNames>
     </foreign-key>
     <foreign-key id="81" parent="32" name="fk9hl1qn0a3v41ejb4kwephrjsv">
-      <ObjectId>16539</ObjectId>
-      <StateNumber>643</StateNumber>
+      <ObjectId>16620</ObjectId>
+      <StateNumber>740</StateNumber>
       <ColNames>goals_id</ColNames>
       <RefTableId>16473</RefTableId>
       <RefColPositions>1</RefColPositions>

@@ -30,7 +30,8 @@ import javax.validation.constraints.*;
 @Table(name = "Patterns")
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+        property = "id",
+        scope = Pattern.class)
 public class Pattern   {
 
   @Id
@@ -104,7 +105,7 @@ public class Pattern   {
   @Type(type="org.hibernate.type.PostgresUUIDType")
   @ManyToMany()
   @JsonProperty("goals")
-// @JsonBackReference
+  //@JsonBackReference
   private List<Goal> goals = null;
 
   @Column(name = "detectedStart", nullable = false)
