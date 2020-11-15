@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +13,7 @@ import androidx.appcompat.widget.AppCompatSeekBar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Callback;
@@ -20,7 +22,9 @@ import retrofit2.Retrofit;
 import retrofit2.Call;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.realityfamily.opkeeper.Adapters.PaymentAdapter;
+import ru.realityfamily.opkeeper.MainActivity;
 import ru.realityfamily.opkeeper.Models.Pattern;
+import ru.realityfamily.opkeeper.Models.SmallInfo;
 import ru.realityfamily.opkeeper.R;
 import ru.realityfamily.opkeeper.Requests.PatternAPI;
 import ru.realityfamily.opkeeper.Requests.TransactionsAPI;
@@ -44,14 +48,20 @@ public class Main_Goal_Fragment extends MyFragment {
         RecyclerView budgetLeaksRecycler = v.findViewById(R.id.budgetLeaksRecycler);
         RecyclerView patternsRecycler = v.findViewById(R.id.patternsRecycler);
 
+        ImageButton addPatternInfo = v.findViewById(R.id.addPatternInfo);
+
         seekBarObligatoryProcent.setProgress(35);
         seekBarObligatoryProcent.setThumb(null);
+        seekBarObligatoryProcent.setEnabled(false);
         seekBarLeisureProcent.setProgress(49);
         seekBarLeisureProcent.setThumb(null);
+        seekBarLeisureProcent.setEnabled(false);
         seekBarСapitalProcent.setProgress(7);
         seekBarСapitalProcent.setThumb(null);
+        seekBarСapitalProcent.setEnabled(false);
 
         seekBarBudgetProcent.setThumb(null);
+        seekBarBudgetProcent.setEnabled(false);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(getString(R.string.Server_Base_URL))
                 .addConverterFactory(GsonConverterFactory.create())
@@ -76,18 +86,43 @@ public class Main_Goal_Fragment extends MyFragment {
         });
 
         budgetLeaksRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        patternsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         PatternAPI patternAPI = retrofit.create(PatternAPI.class);
         Call<List<Pattern>> call1 = patternAPI.getPatterns();
         call1.enqueue(new Callback<List<Pattern>>() {
             @Override
             public void onResponse(Call<List<Pattern>> call, Response<List<Pattern>> response) {
-                budgetLeaksRecycler.setAdapter(new PaymentAdapter(null, response.body()));
+                List<Pattern> budget_leak_elements = new ArrayList<>();
+                List<Pattern> patterns_elements = new ArrayList<>();
+
+                for (Pattern p : response.body()) {
+                    switch (p.getPatternType()) {
+                        case Obligatory:
+                            patterns_elements.add(p);
+                            break;
+                        case Leisure:
+                            budget_leak_elements.add(p);
+                            break;
+                    }
+                }
+                budgetLeaksRecycler.setAdapter(new PaymentAdapter(null,
+                        budget_leak_elements, ((MainActivity) getActivity())));
+                patternsRecycler.setAdapter(new PaymentAdapter(null,
+                        patterns_elements, ((MainActivity) getActivity())));
+
             }
 
             @Override
             public void onFailure(Call<List<Pattern>> call, Throwable t) {
                 Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
                         + call.request().headers().toString() + "\t" + t.getMessage());
+            }
+        });
+
+        addPatternInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).changeFragment(new AddPattern("Add new pattern"));
             }
         });
 

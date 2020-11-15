@@ -16,6 +16,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -31,6 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import ru.realityfamily.opkeeper.Adapters.DashboardAdapter;
 import ru.realityfamily.opkeeper.MainActivity;
 import ru.realityfamily.opkeeper.Models.Goal;
+import ru.realityfamily.opkeeper.Models.SmallInfo;
 import ru.realityfamily.opkeeper.R;
 import ru.realityfamily.opkeeper.Requests.ChallengeAPI;
 import ru.realityfamily.opkeeper.Requests.GoalsAPI;
@@ -44,6 +46,7 @@ public class DashboardFragment extends MyFragment {
     FrameLayout fbottomSheet;
     ImageButton addGoal;
     ImageButton addChallenge;
+    SwipeRefreshLayout dashboardRefresh;
 
     BottomSheetBehavior bottomSheetBehavior;
 
@@ -63,59 +66,12 @@ public class DashboardFragment extends MyFragment {
         addChallenge = v.findViewById(R.id.addChallenge);
         mainGoalCard = v.findViewById(R.id.dashboardCard);
         mainGoalTitle = v.findViewById(R.id.elementTitle);
+        dashboardRefresh = v.findViewById(R.id.dashboardRefresh);
 
         goalsRecycler.setHasFixedSize(true);
         goalsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getString(R.string.Server_Base_URL))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
-        Call<List<DashboardAdapter.SmallInfo>> call = goalsAPI.getGoals();
-        call.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
-            @Override
-            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
-                for (DashboardAdapter.SmallInfo element : response.body()) {
-                    if (element.getName().equals("50/30/20")) {
-                        mainGoalTitle.setText(element.getName());
-                        mainGoalCard.setOnClickListener(getListener(element.getName()));
-                    }
-                }
-
-                DashboardAdapter adapter = new DashboardAdapter(DashboardAdapter.TypeElementInfo.Goal,
-                        (MainActivity) getActivity());
-                goalsRecycler.setAdapter(adapter);
-                new ItemTouchHelper(adapter.swipeCallBack).attachToRecyclerView(goalsRecycler);
-            }
-
-            @Override
-            public void onFailure(Call<List<DashboardAdapter.SmallInfo>> call, Throwable t) {
-                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
-                        + call.request().headers().toString() + "\t" + t.getMessage());
-            }
-        });
-
         challengesRecycler.setHasFixedSize(true);
         challengesRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
-        Call<List<DashboardAdapter.SmallInfo>> call1 = challengeAPI.getChallenges();
-        call1.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
-            @Override
-            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
-                DashboardAdapter adapter = new DashboardAdapter(DashboardAdapter.TypeElementInfo.Challenge,
-                        (MainActivity) getActivity());
-                challengesRecycler.setAdapter(adapter);
-                new ItemTouchHelper(adapter.swipeCallBack).attachToRecyclerView(challengesRecycler);
-            }
-
-            @Override
-            public void onFailure(Call<List<DashboardAdapter.SmallInfo>> call, Throwable t) {
-                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
-                        + call.request().headers().toString() + "\t" + t.getMessage());
-            }
-        });
 
         bottomSheetBehavior = BottomSheetBehavior.from(fbottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -140,6 +96,15 @@ public class DashboardFragment extends MyFragment {
             }
         });
 
+        dashboardRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshRecyclerViewData();
+            }
+        });
+
+        refreshRecyclerViewData();
+
         return v;
     }
 
@@ -158,9 +123,7 @@ public class DashboardFragment extends MyFragment {
                     @Override
                     public void onResponse(Call<Goal> call, Response<Goal> response) {
                         ((MainActivity) getActivity()).changeFragment(
-                                new Main_Goal_Fragment("50/30/20"),
-                                new DashboardFragment("Dashboard")
-                        );
+                                new Main_Goal_Fragment("50/30/20"));
                     }
 
                     @Override
@@ -174,9 +137,55 @@ public class DashboardFragment extends MyFragment {
     }
 
     public void refreshRecyclerViewData() {
-        goalsRecycler.getAdapter().notifyDataSetChanged();
-        challengesRecycler.getAdapter().notifyDataSetChanged();
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        dashboardRefresh.setRefreshing(false);
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getString(R.string.Server_Base_URL))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
+        Call<List<SmallInfo>> call = goalsAPI.getGoals();
+        call.enqueue(new Callback<List<SmallInfo>>() {
+            @Override
+            public void onResponse(Call<List<SmallInfo>> call, Response<List<SmallInfo>> response) {
+                for (SmallInfo element : response.body()) {
+                    if (element.getName().equals("50/30/20")) {
+                        mainGoalTitle.setText(element.getName());
+                        mainGoalCard.setOnClickListener(getListener(element.getId().toString()));
+                    }
+                }
+
+                DashboardAdapter adapter = new DashboardAdapter(DashboardAdapter.TypeElementInfo.Goal,
+                        (MainActivity) getActivity());
+                goalsRecycler.setAdapter(adapter);
+                new ItemTouchHelper(adapter.swipeCallBack).attachToRecyclerView(goalsRecycler);
+            }
+
+            @Override
+            public void onFailure(Call<List<SmallInfo>> call, Throwable t) {
+                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                        + call.request().headers().toString() + "\t" + t.getMessage());
+            }
+        });
+
+        ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
+        Call<List<SmallInfo>> call1 = challengeAPI.getChallenges();
+        call1.enqueue(new Callback<List<SmallInfo>>() {
+            @Override
+            public void onResponse(Call<List<SmallInfo>> call, Response<List<SmallInfo>> response) {
+                DashboardAdapter adapter = new DashboardAdapter(DashboardAdapter.TypeElementInfo.Challenge,
+                        (MainActivity) getActivity());
+                challengesRecycler.setAdapter(adapter);
+                new ItemTouchHelper(adapter.swipeCallBack).attachToRecyclerView(challengesRecycler);
+            }
+
+            @Override
+            public void onFailure(Call<List<SmallInfo>> call, Throwable t) {
+                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                        + call.request().headers().toString() + "\t" + t.getMessage());
+            }
+        });
     }
 }

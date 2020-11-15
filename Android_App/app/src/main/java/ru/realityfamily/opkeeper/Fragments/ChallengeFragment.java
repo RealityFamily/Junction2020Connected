@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.realityfamily.opkeeper.Adapters.PaymentAdapter;
+import ru.realityfamily.opkeeper.MainActivity;
 import ru.realityfamily.opkeeper.Models.Challenge;
 import ru.realityfamily.opkeeper.Models.Goal;
 import ru.realityfamily.opkeeper.R;
@@ -55,7 +56,8 @@ public class ChallengeFragment extends MyFragment {
 
         challengePatternsRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         challengePatternsRecycler.setHasFixedSize(true);
-        challengePatternsRecycler.setAdapter(new PaymentAdapter(null, challenge.getGoal().getPatterns()));
+        challengePatternsRecycler.setAdapter(new PaymentAdapter(null,
+                challenge.getGoal().getPatterns(), ((MainActivity) getActivity())));
 
         shareChallenge.setOnClickListener(new View.OnClickListener() {
             @Override

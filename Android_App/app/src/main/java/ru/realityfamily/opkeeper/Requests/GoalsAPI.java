@@ -14,6 +14,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import ru.realityfamily.opkeeper.Adapters.DashboardAdapter;
 import ru.realityfamily.opkeeper.Models.Goal;
+import ru.realityfamily.opkeeper.Models.SmallInfo;
 
 public interface GoalsAPI {
     @Headers({
@@ -21,7 +22,7 @@ public interface GoalsAPI {
             "Auth: 5e6c501b-2387-439b-801f-acdfdea49c3d"
     })
     @GET("/goals")
-    Call<List<DashboardAdapter.SmallInfo>> getGoals();
+    Call<List<SmallInfo>> getGoals();
 
     @Headers({
             "Accept: application/json",

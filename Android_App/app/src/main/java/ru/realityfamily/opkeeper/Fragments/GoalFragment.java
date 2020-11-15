@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ru.realityfamily.opkeeper.Adapters.PaymentAdapter;
+import ru.realityfamily.opkeeper.MainActivity;
 import ru.realityfamily.opkeeper.Models.Goal;
 import ru.realityfamily.opkeeper.R;
 
@@ -62,7 +63,8 @@ public class GoalFragment extends MyFragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new PaymentAdapter(null, goal.getPatterns()));
+        recyclerView.setAdapter(new PaymentAdapter(null, goal.getPatterns(),
+                ((MainActivity) getActivity())));
 
         return v;
     }

@@ -14,8 +14,14 @@
     <string name="share">Share</string>
     <string name="patterns">Patterns</string>
     <string name="budget_leak">Budget leak</string>
-    <string name="Server_Base_URL">http://192.168.1.68:8080</string>
+    <string name="Server_Base_URL">http://77.50.7.230:8080/</string>
     <string name="description">Description</string>
     <string name="success_in_achieving_the_goal">Success in achieving the goal</string>
     <string name="percentage_of_savings_from_the_total_amount_of_the_main_goal">Percentage of savings from the total amount of the main goal "50/30/20"</string>
+    <string name="amount_per_month">Amount per month</string>
+    <string name="average_amount">Average amount</string>
+    <string name="pattern">Pattern</string>
+    <string name="obligatory">Obligatory</string>
+    <string name="leisure">Leisure</string>
+    <string name="capacity">Capacity</string>
 </resources>

@@ -10,7 +10,9 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import ru.realityfamily.opkeeper.Adapters.DashboardAdapter;
 import ru.realityfamily.opkeeper.Models.Pattern;
+import ru.realityfamily.opkeeper.Models.SmallInfo;
 
 public interface PatternAPI {
     @Headers({

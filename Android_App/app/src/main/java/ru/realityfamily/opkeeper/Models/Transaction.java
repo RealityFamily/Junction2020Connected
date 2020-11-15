@@ -6,7 +6,7 @@ import java.util.UUID;
 public class Transaction {
 
     private UUID id = null;
-    private OffsetDateTime timeStamp = null;
+    private String timeStamp = null;
     private Double amount = null;
     private Double balance = null;
     private String counterCompanyName = null;
@@ -14,7 +14,7 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(UUID id, OffsetDateTime timeStamp, Double amount, Double balance, String counterCompanyName) {
+    public Transaction(UUID id, String timeStamp, Double amount, Double balance, String counterCompanyName) {
         this.id = id;
         this.timeStamp = timeStamp;
         this.amount = amount;
@@ -30,11 +30,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public OffsetDateTime getTimeStamp() {
+    public String getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(OffsetDateTime timeStamp) {
+    public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
     }
 

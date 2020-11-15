@@ -14,6 +14,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import ru.realityfamily.opkeeper.Adapters.DashboardAdapter;
 import ru.realityfamily.opkeeper.Models.Challenge;
+import ru.realityfamily.opkeeper.Models.SmallInfo;
 import ru.realityfamily.opkeeper.R;
 
 public interface ChallengeAPI {
@@ -22,7 +23,7 @@ public interface ChallengeAPI {
             "Auth: 5e6c501b-2387-439b-801f-acdfdea49c3d"
     })
     @GET("/challenges")
-    Call<List<DashboardAdapter.SmallInfo>> getChallenges();
+    Call<List<SmallInfo>> getChallenges();
 
     @Headers({
             "Accept: application/json",

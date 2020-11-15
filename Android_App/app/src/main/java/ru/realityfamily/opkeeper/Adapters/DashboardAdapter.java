@@ -27,6 +27,7 @@ import ru.realityfamily.opkeeper.Fragments.GoalFragment;
 import ru.realityfamily.opkeeper.MainActivity;
 import ru.realityfamily.opkeeper.Models.Challenge;
 import ru.realityfamily.opkeeper.Models.Goal;
+import ru.realityfamily.opkeeper.Models.SmallInfo;
 import ru.realityfamily.opkeeper.R;
 import ru.realityfamily.opkeeper.Requests.ChallengeAPI;
 import ru.realityfamily.opkeeper.Requests.GoalsAPI;
@@ -43,51 +44,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
     MainActivity activity;
 
     public DashboardAdapter(TypeElementInfo typeElement, MainActivity activity) {
-        DashboardAdapter adapter = this;
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(activity.getString(R.string.Server_Base_URL))
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
-        Call<List<DashboardAdapter.SmallInfo>> call = goalsAPI.getGoals();
-        call.enqueue(new Callback<List<SmallInfo>>() {
-            @Override
-            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
-                List<DashboardAdapter.SmallInfo> elements = new ArrayList<>();
-                for (DashboardAdapter.SmallInfo element : response.body()) {
-                    if (!element.getName().equals("50/30/20")) {
-                        goalElements.add(element);
-                    }
-                }
-                NotifyAllElements();
-            }
-            @Override
-            public void onFailure(Call<List<SmallInfo>> call, Throwable t) {
-                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
-                        + call.request().headers().toString() + "\t" + t.getMessage());
-            }
-        });
-
-
-        ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
-        Call<List<DashboardAdapter.SmallInfo>> call1 = challengeAPI.getChallenges();
-        call1.enqueue(new Callback<List<DashboardAdapter.SmallInfo>>() {
-            @Override
-            public void onResponse(Call<List<DashboardAdapter.SmallInfo>> call, Response<List<DashboardAdapter.SmallInfo>> response) {
-                challengeElements = response.body();
-                NotifyAllElements();
-            }
-            @Override
-            public void onFailure(Call<List<DashboardAdapter.SmallInfo>> call, Throwable t) {
-                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
-                        + call.request().headers().toString() + "\t" + t.getMessage());
-            }
-        });
-
         this.typeElement = typeElement;
         this.activity = activity;
+        getData();
     }
 
     @NonNull
@@ -107,13 +66,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         switch (typeElement) {
 
             case Goal:
-                holder.elementTitle.setText(goalElements.get(position).name);
+                holder.elementTitle.setText(goalElements.get(position).getName());
                 holder.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
 
-                        String goalId = goalElements.get(position).id.toString();
+                        String goalId = goalElements.get(position).getId().toString();
                         Call<Goal> call = goalsAPI.getGoal(goalId);
                         call.enqueue(new Callback<Goal>() {
                             @Override
@@ -122,10 +81,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
                                 Goal temp = response.body();
 
-                                activity.changeFragment(
-                                        new GoalFragment(response.body(),"Goal"),
-                                        new DashboardFragment("Dashboard")
-                                );
+                                activity.changeFragment(new GoalFragment(response.body(),"Goal"));
                             }
 
                             @Override
@@ -138,19 +94,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
                 });
                 break;
             case Challenge:
-                holder.elementTitle.setText(challengeElements.get(position).name);
+                holder.elementTitle.setText(challengeElements.get(position).getName());
                 holder.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
 
-                        Call<Challenge> call = challengeAPI.getChallenge(challengeElements.get(position).id.toString());
+                        Call<Challenge> call = challengeAPI.getChallenge(challengeElements.get(position).getId().toString());
                         call.enqueue(new Callback<Challenge>() {
                             @Override
                             public void onResponse(Call<Challenge> call, Response<Challenge> response) {
                                 activity.changeFragment(
-                                        new ChallengeFragment(response.body(), "Challenge"),
-                                        new DashboardFragment("Dashboard"));
+                                        new ChallengeFragment(response.body(), "Challenge"));
                             }
 
                             @Override
@@ -190,32 +145,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         }
     }
 
-    public static class SmallInfo {
-        String name;
-        UUID id;
-
-        public SmallInfo(String name, UUID id) {
-            this.name = name;
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public UUID getId() {
-            return id;
-        }
-
-        public void setId(UUID id) {
-            this.id = id;
-        }
-    }
-
     public void NotifyAllElements() {
         notifyDataSetChanged();
     }
@@ -242,7 +171,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
+                            getData();
                         }
 
                         @Override
@@ -250,8 +179,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
                         }
                     });
-
-                    goalElements.remove(position);
                     break;
                 case Challenge:
                     ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
@@ -259,7 +186,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
                     call1.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
+                            getData();
                         }
 
                         @Override
@@ -267,10 +194,53 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
 
                         }
                     });
-
-                    challengeElements.remove(position);
                     break;
             }
         }
     };
+
+    public void getData() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(activity.getString(R.string.Server_Base_URL))
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        GoalsAPI goalsAPI = retrofit.create(GoalsAPI.class);
+        Call<List<SmallInfo>> call = goalsAPI.getGoals();
+        call.enqueue(new Callback<List<SmallInfo>>() {
+            @Override
+            public void onResponse(Call<List<SmallInfo>> call, Response<List<SmallInfo>> response) {
+                List<SmallInfo> elements = new ArrayList<>();
+                goalElements.clear();
+                for (SmallInfo element : response.body()) {
+                    if (!element.getName().equals("50/30/20")) {
+                        goalElements.add(element);
+                    }
+                }
+                NotifyAllElements();
+            }
+            @Override
+            public void onFailure(Call<List<SmallInfo>> call, Throwable t) {
+                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                        + call.request().headers().toString() + "\t" + t.getMessage());
+            }
+        });
+
+
+        ChallengeAPI challengeAPI = retrofit.create(ChallengeAPI.class);
+        Call<List<SmallInfo>> call1 = challengeAPI.getChallenges();
+        call1.enqueue(new Callback<List<SmallInfo>>() {
+            @Override
+            public void onResponse(Call<List<SmallInfo>> call, Response<List<SmallInfo>> response) {
+                challengeElements.clear();
+                challengeElements = response.body();
+                NotifyAllElements();
+            }
+            @Override
+            public void onFailure(Call<List<SmallInfo>> call, Throwable t) {
+                Log.e("RETROFIT_ERROR", call.request().url().toString() + "\t Headers: "
+                        + call.request().headers().toString() + "\t" + t.getMessage());
+            }
+        });
+    }
 }

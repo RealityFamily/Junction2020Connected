@@ -6,73 +6,78 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <ScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/dashboardRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="@dimen/normal_margin"
-            android:background="@color/background">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:text="@string/Goal_Intro"
-                android:textColor="@color/TextColor"
-                android:fontFamily="@font/poppins"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_margin"
-                android:layout_marginBottom="@dimen/normal_margin"
-                android:text="@string/your_goal"
-                android:fontFamily="@font/poppins"
-                android:textColor="@color/TitleColor"
-                android:textSize="@dimen/normal_text_size"/>
-
-            <include layout="@layout/dashboard_cardview_element"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/RecyclerGoals"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <ImageButton
-                android:id="@+id/addGoal"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_margin"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_group_2"
-                android:background="@android:color/transparent"/>
+                android:orientation="vertical"
+                android:layout_margin="@dimen/normal_margin"
+                android:background="@color/background">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/normal_margin"
-                android:text="@string/your_challenge"
-                android:fontFamily="@font/poppins"
-                android:textColor="@color/TitleColor"
-                android:textSize="@dimen/normal_text_size"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/RecyclerChallenges"
-                android:layout_marginTop="@dimen/normal_margin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <ImageButton
-                android:id="@+id/addChallenge"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="@dimen/normal_margin"
-                android:layout_marginBottom="30dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_group_2"
-                android:background="@android:color/transparent"/>
-        </LinearLayout>
+                <TextView
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Goal_Intro"
+                    android:textColor="@color/TextColor"
+                    android:fontFamily="@font/poppins"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginBottom="@dimen/normal_margin"
+                    android:text="@string/your_goal"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/TitleColor"
+                    android:textSize="@dimen/normal_text_size"/>
 
-    </ScrollView>
+                <include layout="@layout/dashboard_cardview_element"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RecyclerGoals"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <ImageButton
+                    android:id="@+id/addGoal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_group_2"
+                    android:background="@android:color/transparent"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:text="@string/your_challenge"
+                    android:fontFamily="@font/poppins"
+                    android:textColor="@color/TitleColor"
+                    android:textSize="@dimen/normal_text_size"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RecyclerChallenges"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <ImageButton
+                    android:id="@+id/addChallenge"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/normal_margin"
+                    android:layout_marginBottom="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_group_2"
+                    android:background="@android:color/transparent"/>
+            </LinearLayout>
+
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <include layout="@layout/bottom_sheet"/>
 
